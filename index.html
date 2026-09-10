@@ -31,3 +31,357 @@
 </style>
 </head>
 <body>
+    <section id="page-moments" class="hidden">
+      <div class="moment-dashboard-hero">
+        <div>
+          <span class="eyebrow">MOMEN KAMERA</span>
+          <h1>kabar lewat foto.</h1>
+          <p>ambil foto langsung dari kamera untuk mengabari orang lain tentang keadaan atau kegiatan Anda saat ini. momen kamera disimpan terpisah dari foto dan video kenangan.</p>
+        </div>
+        <button class="hero-add" onclick="openMoment()"><span>◉</span><b>Buka kamera</b><small>Ambil foto sekarang</small></button>
+      </div>
+      <div class="section-head"><h2>momen terbaru</h2><span id="momentDashCount">0 momen</span></div>
+      <div id="momentDashboard" class="moment-dashboard-grid"></div>
+    </section>
+
+    <!-- ALBUMS -->
+    <section id="page-albums" class="hidden"><div class="section-head"><h2>album</h2><span>koleksi berdasarkan cerita</span></div><div id="albumGrid" class="album-grid"></div></section>
+    <!-- VIDEOS -->
+    <section id="page-videos" class="hidden"><div class="section-head"><h2>video</h2><span>semua video tersimpan</span></div><div id="videoGrid" class="page-grid"></div></section>
+    <!-- FAVORITES -->
+    <section id="page-favorites" class="hidden"><div class="section-head"><h2>favorit saya</h2><span>yang ingin lu simpan lebih dekat</span></div><div id="favGrid" class="page-grid"></div></section>
+
+    <!-- PROFILE -->
+    <section id="page-profile" class="hidden profile-screen">
+      <div class="profile-cover"></div>
+      <div class="profile-main">
+        <div class="profile-avatar profile-avatar-large">
+          <div id="profileAvatarLarge">♡</div>
+        </div>
+        <div class="profile-screen-info">
+          <h1 id="profileName">OurMemory</h1>
+          <div id="profileEmail" class="profile-email">-</div>
+          <div class="profile-stats">
+            <div><strong id="profilePostCount">0</strong><span>postingan</span></div>
+            <div><strong id="profileMomentCount">0</strong><span>momen</span></div>
+            <div><strong id="profileFavCount">0</strong><span>favorit</span></div>
+          </div>
+          <div class="profile-screen-actions">
+            <button class="soft-btn accent" onclick="editProfile()">Edit profil</button>
+            <button class="soft-btn" onclick="shareProfile()">Bagikan profil</button>
+          </div>
+          <div id="profileBio" class="profile-bio">koleksi momen yang disimpan di OurMemory.</div>
+        </div>
+      </div>
+      <div class="profile-tabs">
+        <button class="on" onclick="profileTab('memories',this)">▦ <span>Kenangan</span></button>
+        <button onclick="profileTab('moments',this)">◉ <span>Momen</span></button>
+        <button onclick="profileTab('favorites',this)">♡ <span>Favorit</span></button>
+      </div>
+      <div id="profileGrid" class="page-grid profile-grid"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="page-settings" class="hidden">
+      <div class="settings-intro">
+        <span class="eyebrow">PENGATURAN</span>
+        <h1>atur akun & kenangan.</h1>
+        <p>kelola informasi akun, favorit, momen kamera, dan sesi akun Anda.</p>
+      </div>
+      <div class="settings-card">
+        <button class="settings-row settings-click" onclick="openAccountCenter()">
+          <div class="settings-left"><div class="settings-icon">◎</div><div><b>Pusat akun</b><span>lihat informasi akun yang sedang digunakan</span></div></div>
+          <strong>›</strong>
+        </button>
+        <button class="settings-row settings-click" onclick="go('favorites')">
+          <div class="settings-left"><div class="settings-icon">♡</div><div><b>Favorit</b><span>lihat kenangan yang Anda tandai sebagai favorit</span></div></div>
+          <strong>›</strong>
+        </button>
+        <button class="settings-row settings-click" onclick="go('moments')">
+          <div class="settings-left"><div class="settings-icon">◉</div><div><b>Momen Kamera</b><span>lihat foto yang dikirim sebagai kabar</span></div></div>
+          <strong>›</strong>
+        </button>
+        <button class="settings-row settings-click" onclick="go('home')">
+          <div class="settings-left"><div class="settings-icon">▣</div><div><b>Kenangan</b><span>kembali melihat foto dan video yang tersimpan</span></div></div>
+          <strong>›</strong>
+        </button>
+        <button class="settings-row settings-click logout-row" onclick="logout()">
+          <div class="settings-left"><div class="settings-icon">↪</div><div><b>Keluar dari akun</b><span>akhiri sesi OurMemory pada perangkat ini</span></div></div>
+          <strong>›</strong>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- MOBILE NAV -->
+  <nav class="mobile-nav">
+    <button onclick="go('home')" id="mnav-home">⌂<span>Beranda</span></button>
+    <button onclick="go('moments')" id="mnav-moments">◉<span>Momen</span></button>
+    <button onclick="openMoment()" class="nav-camera">＋</button>
+    <button onclick="go('favorites')" id="mnav-favorites">♡<span>Favorit</span></button>
+    <button onclick="go('profile')" id="mnav-profile">○<span>Profil</span></button>
+  </nav>
+</div>
+
+<!-- VIEW MEMORY -->
+<div id="viewModal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3 id="viewTitle">Kenangan</h3>
+        <p id="viewOwner" class="view-owner"></p>
+      </div>
+      <button class="close" onclick="closeModal('viewModal')">×</button>
+    </div>
+    <div style="height:15px"></div>
+    <div id="viewMedia"></div>
+    <div id="viewMeta" class="view-meta"></div>
+    <div id="viewNote" class="view-note"></div>
+    <div id="viewActions" class="modal-actions"></div>
+  </div>
+</div>
+
+<!-- UPLOAD -->
+<div id="uploadModal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3>tambah kenangan</h3>
+        <p>unggah foto atau video untuk disimpan di koleksi kenangan Anda.</p>
+      </div>
+      <button class="close" onclick="closeModal('uploadModal')">×</button>
+    </div>
+    <div style="height:15px"></div>
+    <div class="field">
+      <label>FOTO / VIDEO</label>
+      <input id="mediaFile" type="file" accept="image/*,video/*">
+    </div>
+    <div class="field">
+      <label>JUDUL</label>
+      <input id="mediaTitle" maxlength="100" placeholder="contoh: malam yang indah">
+    </div>
+    <div class="field">
+      <label>TANGGAL</label>
+      <input id="mediaDate" type="date">
+    </div>
+    <div class="field">
+      <label>ALBUM</label>
+      <input id="mediaAlbum" maxlength="50" placeholder="contoh: liburan">
+    </div>
+    <div class="field">
+      <label>CATATAN</label>
+      <textarea id="mediaNote" maxlength="500" placeholder="tulis cerita singkat tentang kenangan ini..."></textarea>
+    </div>
+    <button class="primary" onclick="uploadMemory()">Simpan ke kenangan</button>
+    <div id="uploadStatus" class="error"></div>
+  </div>
+</div>
+
+<!-- CAMERA -->
+<div id="cameraModal" class="modal hidden">
+  <div class="modal-box camera-modal-box">
+    <div class="modal-head">
+      <div>
+        <h3>momen kamera</h3>
+        <p>ambil foto langsung dari kamera untuk mengabari orang lain.</p>
+      </div>
+      <button class="close" onclick="closeCamera()">×</button>
+    </div>
+
+    <div id="cameraStage">
+      <div class="camera-wrap">
+        <video id="cameraVideo" class="camera-video" autoplay playsinline muted></video>
+        <div class="camera-overlay"><span>OURMEMORY</span><span id="cameraTime">00:00</span></div>
+        <div class="camera-guide"></div>
+        <div id="cameraStatus" class="camera-status hidden">menyiapkan kamera...</div>
+        <div id="cameraError" class="camera-error hidden">
+          <div>
+            <div style="font-size:26px;margin-bottom:8px">◉</div>
+            <b id="cameraErrorText">kamera belum mendapatkan izin.</b>
+            <div style="margin-top:5px;color:#858993">silakan izinkan akses kamera dari pemberitahuan browser agar Anda dapat mengambil momen.</div>
+            <button class="soft-btn" onclick="requestCameraPermission()">Izinkan kamera</button>
+          </div>
+        </div>
+      </div>
+      <div class="camera-actions">
+        <button class="camera-side-btn" onclick="switchCamera()" title="Ganti kamera">↻</button>
+        <button id="shutterBtn" class="shutter" onclick="captureMoment()" disabled><span></span></button>
+        <button class="camera-side-btn" onclick="closeCamera()" title="Tutup">×</button>
+      </div>
+    </div>
+
+    <div id="capturedStage" class="hidden">
+      <div class="captured-wrap">
+        <img id="capturedPreview" class="captured-preview">
+        <button class="retake-btn" onclick="retakeMoment()">Ambil ulang</button>
+      </div>
+      <div class="field">
+        <label>KETERANGAN</label>
+        <textarea id="momentCaption" maxlength="220" placeholder="tulis keterangan untuk momen ini..."></textarea>
+      </div>
+      <button class="primary" onclick="saveMoment()">Kirim momen</button>
+      <div id="momentStatus" class="error"></div>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE EDIT -->
+<div id="profileModal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3>edit profil</h3>
+        <p>nama dan bio akan disimpan di akun lu.</p>
+      </div>
+      <button class="close" onclick="closeModal('profileModal')">×</button>
+    </div>
+    <div style="height:15px"></div>
+    <div class="field">
+      <label>NAMA</label>
+      <input id="profileEditName">
+    </div>
+    <div class="field">
+      <label>BIO</label>
+      <textarea id="profileEditBio" maxlength="180"></textarea>
+    </div>
+    <button class="primary" onclick="saveProfile()">Simpan profil</button>
+  </div>
+</div>
+
+<!-- ACCOUNT CENTER -->
+<div id="accountModal" class="modal hidden">
+  <div class="modal-box account-modal">
+    <div class="modal-head">
+      <div>
+        <h3>pusat akun</h3>
+        <p>informasi akun OurMemory yang sedang digunakan.</p>
+      </div>
+      <button class="close" onclick="closeModal('accountModal')">×</button>
+    </div>
+    <div class="account-card">
+      <div id="accountAvatar" class="avatar">♡</div>
+      <div>
+        <b id="accountName">OurMemory</b>
+        <span id="accountEmail">akun</span>
+      </div>
+    </div>
+    <div class="account-info">
+      <div>
+        <small>NAMA TAMPILAN</small>
+        <b id="accountName2">OurMemory</b>
+      </div>
+      <div>
+        <small>EMAIL</small>
+        <b id="accountEmail2">-</b>
+      </div>
+      <div>
+        <small>STATUS</small>
+        <b>akun aktif</b>
+      </div>
+    </div>
+    <button class="primary" onclick="closeModal('accountModal');editProfile()">Edit informasi profil</button>
+  </div>
+</div>
+
+<div id="toast" class="hidden" style="position:fixed;z-index:150;left:50%;bottom:95px;transform:translateX(-50%);padding:11px 15px;border-radius:13px;background:#f4f4f5;color:#15161a;font-size:12px;font-weight:750;box-shadow:0 15px 35px rgba(0,0,0,.35);max-width:calc(100% - 30px);text-align:center"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL='https://yodzsjqdnxhpocmjgcec.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_0_D38_8u4ts_XStJU49C-Q_y8_cOM4k';
+const BUCKET='ourmemory';
+
+let sb=null,user=null,memories=[],moments=[],activeMemory=null,activeMoment=null,authMode='login',cameraStream=null,cameraFacing='environment',capturedMomentBlob=null,cameraTimer=null;
+
+const $=id=>document.getElementById(id);
+
+function toast(msg){
+  const t=$('toast');
+  t.textContent=msg;
+  t.classList.remove('hidden');
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>t.classList.add('hidden'),2800);
+}
+
+function esc(v){
+  return String(v??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[c]))
+}
+
+function dateFmt(s){
+  if(!s)return '';
+  return new Date(s).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
+}
+
+function timeFmt(s){
+  if(!s)return '';
+  return new Date(s).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
+}
+
+function mode(m){
+  authMode=m;
+  $('loginTab').classList.toggle('on',m==='login');
+  $('registerTab').classList.toggle('on',m==='register');
+  $('nameField').classList.toggle('hidden',m==='login');
+  $('confirmField').classList.toggle('hidden',m==='login');
+  $('authButton').textContent=m==='login'?'Masuk ke OurMemory':'Buat akun OurMemory';
+  $('authError').textContent=''
+}
+
+function togglePassword(){
+  const p=$('pass');
+  p.type=p.type==='password'?'text':'password'
+}
+
+$('authForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  await auth()
+});
+
+async function auth(){
+  try{
+    if(!sb)return $('authError').textContent='Supabase belum siap, coba refresh halaman.';
+    const email=$('email').value.trim(),pass=$('pass').value;
+
+    if(!email||!pass)return $('authError').textContent='email dan password wajib diisi.';
+
+    if(authMode==='register'){
+      const name=$('name').value.trim(),conf=$('confirm').value;
+
+      if(!name)return $('authError').textContent='nama wajib diisi.';
+      if(pass!==conf)return $('authError').textContent='konfirmasi password belum sama.';
+
+      const r=await sb.auth.signUp({
+        email,
+        password:pass,
+        options:{
+          data:{
+            display_name:name,
+            bio:'koleksi momen yang disimpan di OurMemory.'
+          }
+        }
+      });
+
+      if(r.error)return $('authError').textContent=r.error.message;
+
+      if(r.data.session)enter(r.data.user);
+      else $('authError').textContent='akun berhasil dibuat. cek email konfirmasi bila diminta.'
+    }else{
+      const r=await sb.auth.signInWithPassword({
+        email,
+        password:pass
+      });
+
+      if(r.error)return $('authError').textContent=r.error.message;
+      enter(r.data.user)
+    }
+  }catch(err){
+    console.error(err);
+    $('authError').textContent=err.message||'terjadi kesalahan.'
+  }
+}
