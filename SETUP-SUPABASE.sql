@@ -11,10 +11,31 @@ create table if not exists public.profiles (
 create or replace function public.handle_new_user() returns trigger
 language plpgsql security definer set search_path = public
 as $$
+declare
+  base_username text;
+  final_username text;
 begin
+  base_username := lower(coalesce(
+    nullif(new.raw_user_meta_data->>'username',''),
+    nullif(new.raw_user_meta_data->>'display_name',''),
+    nullif(split_part(coalesce(new.email,''),'@',1),''),
+    'user'
+  ));
+
+  base_username := regexp_replace(base_username, '[^a-z0-9._]+', '_', 'g');
+  base_username := trim(both '._' from base_username);
+  if base_username = '' then base_username := 'user'; end if;
+
+  final_username := base_username;
+
+  if exists (select 1 from public.profiles where lower(username)=lower(final_username) and user_id<>new.id) then
+    final_username := base_username || '_' || substr(replace(new.id::text,'-',''),1,8);
+  end if;
+
   insert into public.profiles(user_id,username,bio)
-  values(new.id,lower(coalesce(new.raw_user_meta_data->>'username',split_part(new.email,'@',1))),coalesce(new.raw_user_meta_data->>'bio','belum ada bio.'))
-  on conflict (user_id) do update set username=excluded.username,bio=excluded.bio,updated_at=now();
+  values(new.id,final_username,coalesce(new.raw_user_meta_data->>'bio','belum ada bio.'))
+  on conflict (user_id) do nothing;
+
   return new;
 end;
 $$;
@@ -124,6 +145,26 @@ create policy "messages participants read" on public.messages for select to auth
 drop policy if exists "messages mutual insert" on public.messages;
 create policy "messages mutual insert" on public.messages for insert to authenticated with check(auth.uid()=sender_id and exists(select 1 from public.follows a where a.follower_id=auth.uid() and a.following_id=recipient_id) and exists(select 1 from public.follows b where b.follower_id=recipient_id and b.following_id=auth.uid()));
 
+
+-- MEDIA KENANGAN: bucket publik agar foto/video yang tersimpan dapat ditampilkan
+-- kembali di semua perangkat dan semua akun yang sudah login.
+insert into storage.buckets (id,name,public)
+values ('ourmemory','ourmemory',true)
+on conflict (id) do update set public=true;
+
+drop policy if exists "ourmemory public media read" on storage.objects;
+create policy "ourmemory public media read" on storage.objects
+for select using (bucket_id='ourmemory');
+
+drop policy if exists "ourmemory authenticated media upload" on storage.objects;
+create policy "ourmemory authenticated media upload" on storage.objects
+for insert to authenticated
+with check (bucket_id='ourmemory' and (storage.foldername(name))[1]=auth.uid()::text);
+
+drop policy if exists "ourmemory owner media delete" on storage.objects;
+create policy "ourmemory owner media delete" on storage.objects
+for delete to authenticated
+using (bucket_id='ourmemory' and (storage.foldername(name))[1]=auth.uid()::text);
 
 -- PERJALANAN KITA: satu data bersama untuk semua akun dan semua perangkat.
 -- Data tanggal disimpan di Supabase, BUKAN localStorage, sehingga tidak reset
