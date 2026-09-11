@@ -707,7 +707,7 @@ function viewMemory(id){
   : '';
  $('viewTitle').textContent=x.title||'KENANGAN';
  $('viewOwner').textContent=ownerName(x.user_id);
- $('viewMedia').innerHTML=`<div class="view-layout memory-open-layout"><div class="media-frame">${media}<span class="open-media-hint">× KLIK TUTUP</span></div><div class="view-side"><div class="view-date">${esc(dateFmt(x.date))}</div><div class="view-quote">${esc(x.note||'setiap momen punya cerita sendiri.')}</div><div class="detail-meta">ALBUM · ${esc(x.album||'UMUM')} · ${x.type==='video'?'VIDEO':'FOTO'}</div><div class="view-nav">${actions}<button class="soft-btn" onclick="downloadMemory()">DOWNLOAD</button></div></div></div>`;
+ $('viewMedia').innerHTML=`<div class="view-layout memory-open-layout"><div class="media-frame">${media}<span class="open-media-hint">× KLIK TUTUP</span></div><div class="view-side"><div class="view-side-kicker">DEAR US,</div><div class="view-quote">${esc(memoryQuote(x))}</div><div class="view-date">${esc(dateFmt(x.date))}</div><div class="view-note">${esc(x.note||'setiap momen punya cerita sendiri.')}</div><div class="detail-meta">ALBUM · ${esc(x.album||'UMUM')} · ${x.type==='video'?'VIDEO':'FOTO'}</div><div class="view-nav">${actions}<button class="soft-btn" onclick="downloadMemory()">DOWNLOAD</button></div></div></div>`;
  $('viewMeta').textContent=''; $('viewNote').textContent='';
  $('viewModal').classList.remove('hidden');
  const frame=document.querySelector('#viewModal .media-frame');
