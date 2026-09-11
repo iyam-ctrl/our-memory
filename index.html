@@ -561,30 +561,44 @@ body{font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:.01em}button,
 #savedGrid .memory-video-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(35,24,28,.72);color:#fff;font:900 20px/1 Arial,sans-serif;padding-left:3px;box-shadow:0 8px 24px rgba(0,0,0,.22);pointer-events:none}
 </style>
 
-<style id="ourmemory-pink-white">
+<style id="ourmemory-theme-restore">
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+/* RESTORED THEME ONLY — functionality/content intentionally untouched */
 :root{
- --bg:#fff8fa!important;--surface:#ffffff!important;--surface2:#fff0f4!important;--surface3:#ffe5ec!important;
- --line:#f3cbd5!important;--text:#4b3038!important;--muted:#9b747f!important;
- --accent:#e98ca5!important;--accent2:#f6b7c8!important;--good:#7aa88c!important;--danger:#d96a83!important;
- --paper:#fffdfd!important;--ink:#4b3038!important;--rose:#e98ca5!important;--rose2:#f6b7c8!important;
- --shadow:0 20px 55px rgba(194,91,117,.12)!important;--nav:rgba(255,255,255,.94)!important;
+ --bg:#09090d!important;--surface:#111218!important;--surface2:#181a22!important;--surface3:#222530!important;
+ --line:rgba(255,255,255,.09)!important;--text:#f8f4f5!important;--muted:#a9a1a6!important;
+ --accent:#ef8e9e!important;--accent2:#ffd0d8!important;--good:#69b58b!important;--danger:#e36d7d!important;
+ --paper:#f2e9e8!important;--ink:#2d2528!important;--rose:#ef8e9e!important;--rose2:#ffd0d8!important;
+ --gold:#c8a16a!important;--shadow:0 24px 80px rgba(0,0,0,.38)!important;--nav:rgba(17,18,24,.92)!important;
 }
 html,body,#app{background:var(--bg)!important;color:var(--text)!important}
 body,body *{font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important}
 h1,h2,h3,h4,h5,h6,p,.brand,.top-title,.home-head h1,.section-head h2,.caption,.detail-note,.view-quote,.diary-quote,.memory-spread-copy,.journey-copy,.journey-copy h1,.timeline-item b{font-family:'Cormorant Garamond',Georgia,serif!important}
 button,input,textarea,select{font-family:'DM Sans',system-ui,sans-serif!important}
-button,.soft-btn,.danger,.hero-upload,.primary,.camera-launch{border-color:var(--line)!important}
-button,.soft-btn,.hero-upload,.primary,.camera-launch{background:linear-gradient(135deg,var(--accent),var(--accent2))!important;color:#fff!important}
-input,textarea,select{background:#fff!important;color:var(--text)!important;border-color:var(--line)!important}
-.side-nav,.mobile-nav,.topbar,.settings-card,.modal-box,.journey,.post,.feed .post,.memory-spread{background:#fff!important;border-color:var(--line)!important}
-.side-nav button.on{background:linear-gradient(90deg,#ffe8ee,transparent)!important;box-shadow:inset 2px 0 var(--accent)!important;color:var(--text)!important}
+button,.soft-btn,.hero-upload,.primary,.camera-launch{border-color:var(--line)!important}
+input,textarea,select{background:var(--surface2)!important;color:var(--text)!important;border-color:var(--line)!important}
+.side-nav,.mobile-nav,.topbar,.settings-card,.modal-box,.journey,.post,.feed .post,.memory-spread{background:var(--surface)!important;border-color:var(--line)!important}
+.side-nav button.on{background:linear-gradient(90deg,rgba(239,142,158,.16),transparent)!important;box-shadow:inset 2px 0 var(--accent)!important;color:var(--text)!important}
 .eyebrow,.label,.home-kicker,.top-kicker,.memory-spread-dear,.view-side-kicker,.section-head span,.muted,.tile-date,.post-date{color:var(--muted)!important}
-.memory-spread-quote,.view-quote,.diary-quote{color:#7a4b59!important}
-.tile,.memory-spread,.post{box-shadow:0 14px 45px rgba(194,91,117,.09)!important}
-.profile-cover{background:radial-gradient(circle at 75% 20%,rgba(233,140,165,.28),transparent 20%),linear-gradient(135deg,#ffdce6,#fff)!important}
-.journey{background:linear-gradient(135deg,#fff,#fff1f5)!important;border-color:#f0c2ce!important}
-.journey:before{color:rgba(233,140,165,.55)!important}
+.memory-spread-quote,.view-quote,.diary-quote{color:var(--accent2)!important}
+.tile,.memory-spread,.post{box-shadow:0 14px 45px rgba(0,0,0,.25)!important}
+.profile-cover{background:radial-gradient(circle at 75% 20%,rgba(239,142,158,.20),transparent 20%),linear-gradient(135deg,#24202a,#111218)!important}
+.journey{background:linear-gradient(135deg,#111218,#181a22)!important;border-color:rgba(239,142,158,.20)!important}
+.journey:before{color:rgba(239,142,158,.35)!important}
+button,.soft-btn,.hero-upload,.primary,.camera-launch{background:linear-gradient(135deg,var(--accent),var(--accent2))!important;color:#251b1f!important}
+html[data-theme="light"]{
+ --bg:#f7f2f1!important;--surface:#fffaf9!important;--surface2:#f1e9e8!important;--surface3:#e7dddc!important;
+ --line:rgba(39,27,30,.10)!important;--text:#211b1d!important;--muted:#786e71!important;
+ --accent:#d96d80!important;--accent2:#b84e63!important;--good:#5f9c79!important;--danger:#c85b6d!important;
+ --paper:#fffaf9!important;--ink:#382b2e!important;--rose:#d96d80!important;--rose2:#b84e63!important;
+ --gold:#9d774e!important;--shadow:0 20px 60px rgba(55,35,39,.12)!important;--nav:rgba(255,255,255,.92)!important;
+}
+html[data-theme="light"] .side-nav,html[data-theme="light"] .mobile-nav,html[data-theme="light"] .topbar,html[data-theme="light"] .settings-card,html[data-theme="light"] .modal-box,html[data-theme="light"] .journey,html[data-theme="light"] .post,html[data-theme="light"] .feed .post,html[data-theme="light"] .memory-spread{background:var(--surface)!important}
+html[data-theme="light"] .profile-cover{background:radial-gradient(circle at 75% 20%,rgba(217,109,128,.20),transparent 20%),linear-gradient(135deg,#eadbd6,#fffaf9 60%,#e7d9d3)!important}
+html[data-theme="light"] .journey{background:linear-gradient(135deg,#fffaf9,#f1e9e8)!important;border-color:#e5c6cc!important}
+html[data-theme="light"] .side-nav button.on{background:linear-gradient(90deg,rgba(217,109,128,.13),transparent)!important;color:var(--text)!important}
+html[data-theme="light"] input,html[data-theme="light"] textarea,html[data-theme="light"] select{background:#fff!important;color:var(--text)!important}
+html[data-theme="light"] button,html[data-theme="light"] .soft-btn,html[data-theme="light"] .hero-upload,html[data-theme="light"] .primary,html[data-theme="light"] .camera-launch{color:#fff!important}
 </style>
 </head>
 <body>
@@ -798,9 +812,10 @@ async function openAccountCenter(){if($('accountEmailField'))$('accountEmailFiel
 function openChangePassword(){$('newPassword').value='';$('newPassword2').value='';$('passwordModal')?.classList.remove('hidden')}
 async function changePassword(){const p=($('newPassword')?.value||'').trim(),p2=($('newPassword2')?.value||'').trim();if(!p||p.length<6)return toast('password minimal 6 karakter.');if(p!==p2)return toast('konfirmasi password tidak sama.');const q=await sb.auth.updateUser({password:p});if(q.error)return toast(q.error.message);closeModal('passwordModal');toast('password berhasil diperbarui.')}
 async function saveProfile(){if(typeof saveProfileChanges==='function')return saveProfileChanges();if(typeof applyProfile==='function')applyProfile();closeModal('accountModal');toast('profil diperbarui.')}
-function switchTheme(){document.body.classList.toggle('light');const label=$('themeLabel');if(label)label.textContent=document.body.classList.contains('light')?'terang':'gelap'}
+function applyTheme(theme){const t=theme==='light'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('ourmemory_theme',t);const label=$('themeLabel');if(label)label.textContent=t==='light'?'terang':'gelap'}
+function switchTheme(){const current=document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';applyTheme(current==='light'?'dark':'light')}
 
-async function init(){if(!SUPABASE_URL||!SUPABASE_ANON_KEY)return;sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);const r=await sb.auth.getSession();if(r.data.session)await enter(r.data.session.user);else mode('login')}
+async function init(){applyTheme(localStorage.getItem('ourmemory_theme')||'dark');if(!SUPABASE_URL||!SUPABASE_ANON_KEY)return;sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);const r=await sb.auth.getSession();if(r.data.session)await enter(r.data.session.user);else mode('login')}
 init();
 </script>
 <script>
