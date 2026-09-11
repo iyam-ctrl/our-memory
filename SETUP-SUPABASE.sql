@@ -66,6 +66,17 @@ create table if not exists public.messages (
   check(sender_id<>recipient_id)
 );
 
+-- KENANGAN COUPLE: semua akun yang berhasil login dapat melihat kenangan bersama.
+alter table public.memories enable row level security;
+drop policy if exists "memories couple read" on public.memories;
+create policy "memories couple read" on public.memories for select to authenticated using(true);
+drop policy if exists "memories owner insert" on public.memories;
+create policy "memories owner insert" on public.memories for insert to authenticated with check(auth.uid()=user_id);
+drop policy if exists "memories owner update" on public.memories;
+create policy "memories owner update" on public.memories for update to authenticated using(auth.uid()=user_id) with check(auth.uid()=user_id);
+drop policy if exists "memories owner delete" on public.memories;
+create policy "memories owner delete" on public.memories for delete to authenticated using(auth.uid()=user_id);
+
 alter table public.profiles enable row level security;
 alter table public.follows enable row level security;
 alter table public.post_likes enable row level security;
