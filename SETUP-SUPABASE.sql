@@ -124,6 +124,37 @@ create policy "messages participants read" on public.messages for select to auth
 drop policy if exists "messages mutual insert" on public.messages;
 create policy "messages mutual insert" on public.messages for insert to authenticated with check(auth.uid()=sender_id and exists(select 1 from public.follows a where a.follower_id=auth.uid() and a.following_id=recipient_id) and exists(select 1 from public.follows b where b.follower_id=recipient_id and b.following_id=auth.uid()));
 
+
+-- PERJALANAN KITA: satu data bersama untuk semua akun dan semua perangkat.
+-- Data tanggal disimpan di Supabase, BUKAN localStorage, sehingga tidak reset
+-- saat IAM/SAVISTA login dari akun berbeda atau perangkat berbeda.
+create table if not exists public.journey_settings (
+  id integer primary key default 1 check (id=1),
+  meet_date date,
+  relation_date date,
+  updated_by uuid references auth.users(id) on delete set null,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.journey_settings enable row level security;
+drop policy if exists "journey shared read" on public.journey_settings;
+create policy "journey shared read" on public.journey_settings for select to authenticated using(true);
+drop policy if exists "journey shared insert" on public.journey_settings;
+create policy "journey shared insert" on public.journey_settings for insert to authenticated with check(true);
+drop policy if exists "journey shared update" on public.journey_settings;
+create policy "journey shared update" on public.journey_settings for update to authenticated using(true) with check(true);
+
+-- Aktifkan realtime agar perubahan tanggal langsung tersinkron di perangkat lain.
+do $$
+begin
+  if not exists (select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='journey_settings') then
+    alter publication supabase_realtime add table public.journey_settings;
+  end if;
+exception when undefined_object then
+  null;
+end $$;
+
+
 -- moments table (aman bila sudah ada)
 create table if not exists public.moments (
   id uuid primary key, user_id uuid not null references auth.users(id) on delete cascade, photo_path text not null unique, photo_url text not null, caption text not null default '', created_at timestamptz not null default now()
