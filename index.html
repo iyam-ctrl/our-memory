@@ -600,6 +600,85 @@ html[data-theme="light"] .side-nav button.on{background:linear-gradient(90deg,rg
 html[data-theme="light"] input,html[data-theme="light"] textarea,html[data-theme="light"] select{background:#fff!important;color:var(--text)!important}
 html[data-theme="light"] button,html[data-theme="light"] .soft-btn,html[data-theme="light"] .hero-upload,html[data-theme="light"] .primary,html[data-theme="light"] .camera-launch{color:#fff!important}
 </style>
+
+<style id="ourmemory-requested-dark-only-styling">
+/* REQUESTED CHANGES ONLY: dark-only theme + typography accents */
+:root{
+  --requested-ink:#fff7fa;
+  --requested-soft:#ead7de;
+  --requested-muted:#b9a5ad;
+  --requested-pink:#ef8e9e;
+  --requested-pink2:#ffd0d8;
+  --requested-gold:#d9b57a;
+}
+html,html[data-theme="dark"],body{background:var(--bg)!important;color:var(--text)!important}
+html[data-theme="light"]{
+  --bg:#09090d!important;--surface:#111218!important;--surface2:#181a22!important;--surface3:#222530!important;
+  --line:rgba(255,255,255,.09)!important;--text:#f8f4f5!important;--muted:#a9a1a6!important;
+  --accent:#ef8e9e!important;--accent2:#ffd0d8!important;--good:#69b58b!important;--danger:#e36d7d!important;
+  --paper:#f2e9e8!important;--ink:#2d2528!important;--rose:#ef8e9e!important;--rose2:#ffd0d8!important;
+  --gold:#c8a16a!important;--shadow:0 24px 80px rgba(0,0,0,.38)!important;--nav:rgba(17,18,24,.92)!important;
+}
+html[data-theme="light"],html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}
+/* beranda: hari bersama lebih menonjol, tetap aesthetic */
+#togetherDays{
+  display:block!important;
+  font-family:'Cormorant Garamond',Georgia,serif!important;
+  font-size:clamp(30px,6vw,42px)!important;
+  line-height:.95!important;
+  font-weight:700!important;
+  letter-spacing:-.8px!important;
+  background:linear-gradient(135deg,var(--requested-pink2),var(--requested-pink),var(--requested-gold))!important;
+  -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
+  text-shadow:0 8px 28px rgba(239,142,158,.14)!important;
+}
+/* judul/teks bagian atas galeri */
+#page-profile .section-intro .eyebrow{
+  font-family:'DM Sans',sans-serif!important;
+  color:var(--requested-gold)!important;
+  letter-spacing:3px!important;
+}
+#page-profile .section-intro h1{
+  font-family:'Cormorant Garamond',Georgia,serif!important;
+  font-size:clamp(31px,6vw,44px)!important;
+  font-weight:700!important;
+  letter-spacing:-.8px!important;
+  background:linear-gradient(135deg,var(--requested-ink),var(--requested-pink2),var(--requested-pink))!important;
+  -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
+}
+#page-profile .section-intro p{font-family:'DM Sans',sans-serif!important;color:var(--requested-soft)!important}
+/* caption/keterangan postingan */
+.caption{
+  font-family:'Cormorant Garamond',Georgia,serif!important;
+  font-size:15px!important;
+  line-height:1.72!important;
+  font-weight:500!important;
+  letter-spacing:.1px!important;
+  color:var(--requested-ink)!important;
+}
+.caption b{
+  font-family:'DM Sans',sans-serif!important;
+  font-size:11px!important;
+  font-weight:800!important;
+  letter-spacing:.25px!important;
+  background:linear-gradient(135deg,var(--requested-pink2),var(--requested-pink))!important;
+  -webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;
+}
+/* keterangan/cerita pada kartu foto-video */
+.tile-note,.moment-card-caption,.detail-note{
+  font-family:'Cormorant Garamond',Georgia,serif!important;
+  color:var(--requested-soft)!important;
+  font-size:13px!important;
+  line-height:1.65!important;
+}
+/* pengaturan: hanya tiga baris yang tersisa */
+#page-settings .settings-card .settings-row{font-family:'DM Sans',sans-serif!important}
+#page-settings .settings-card .settings-row b{color:var(--requested-ink)!important}
+#page-settings .settings-card .settings-row span{color:var(--requested-muted)!important}
+#page-settings .settings-icon{color:var(--requested-pink2)!important}
+/* pastikan tombol/menu tetap dark-theme readable */
+button,input,textarea,select{color:var(--text)}
+</style>
 </head>
 <body>
 <section id="loginPage" class="login-page">
@@ -639,7 +718,7 @@ html[data-theme="light"] button,html[data-theme="light"] .soft-btn,html[data-the
     <button data-page="settings" onclick="page('settings')"><i>⚙</i> Pengaturan</button>
   </nav><div class="profile-mini"><div id="sideAvatar" class="avatar">♡</div><div><b id="sideName">username</b><span id="sideEmail">akun</span></div></div></aside>
   <main>
-    <header class="topbar"><div class="top-title-wrap"><div id="topTitle" class="top-title">Kenangan</div><span class="top-kicker">OUR PRIVATE MEMORY SPACE</span></div><div class="top-actions"><button class="memory-upload-top" onclick="openAdd()">＋ simpan kenangan</button><button id="installAppBtn" class="memory-upload-top hidden" onclick="installOurMemory()">＋ pasang aplikasi</button><button class="icon-btn" title="menu" onclick="page('settings')">⋯</button></div></header>
+    <header class="topbar"><div class="top-title-wrap"><div id="topTitle" class="top-title">Kenangan</div><span class="top-kicker">OUR PRIVATE MEMORY SPACE</span></div><div class="top-actions"><button id="installAppBtn" class="memory-upload-top hidden" onclick="installOurMemory()">＋ pasang aplikasi</button><button class="icon-btn" title="menu" onclick="page('settings')">⋯</button></div></header>
 
     <section id="page-home">
       <div class="romantic-cover">
@@ -668,9 +747,9 @@ html[data-theme="light"] button,html[data-theme="light"] .soft-btn,html[data-the
 
     <section id="page-settings" class="hidden"><div class="settings-wrap"><span class="muted" style="font-size:9px;letter-spacing:1.5px;font-weight:900">OURMEMORY</span><h1>pengaturan.</h1><p>kelola akun, tampilan, dan penyimpanan kenangan Anda.</p><div class="settings-card">
       <button class="settings-row settings-click" onclick="openAccountCenter()"><div class="settings-left"><div class="settings-icon">◎</div><div><b>Pusat akun</b><span>email, username, dan password.</span></div></div><strong>›</strong></button>
-      <button class="settings-row settings-click" onclick="page('saved')"><div class="settings-left"><div class="settings-icon">▣</div><div><b>Tersimpan</b><span>kenangan yang Anda simpan untuk dilihat kembali.</span></div></div><strong>›</strong></button>
-      <button class="settings-row settings-click" onclick="switchTheme()"><div class="settings-left"><div class="settings-icon">◐</div><div><b>Tema</b><span id="themeLabel">gelap</span></div></div><strong>↔</strong></button>
-      <button class="settings-row settings-click" onclick="openMessages()"><div class="settings-left"><div class="settings-icon">⌁</div><div><b>Pesan</b><span>pesan dengan akun yang saling mengikuti.</span></div></div><strong>›</strong></button>
+      
+      
+      
       <button class="settings-row settings-click" onclick="switchAccount()"><div class="settings-left"><div class="settings-icon">⇄</div><div><b>Ganti akun</b><span>keluar dari akun ini dan masuk dengan akun lain.</span></div></div><strong>›</strong></button>
       <button class="settings-row settings-click logout-row" onclick="logout()"><div class="settings-left"><div class="settings-icon">↪</div><div><b>Keluar akun</b><span>akhiri sesi OurMemory pada perangkat ini.</span></div></div><strong>›</strong></button>
     </div></div></section>
@@ -812,10 +891,9 @@ async function openAccountCenter(){if($('accountEmailField'))$('accountEmailFiel
 function openChangePassword(){$('newPassword').value='';$('newPassword2').value='';$('passwordModal')?.classList.remove('hidden')}
 async function changePassword(){const p=($('newPassword')?.value||'').trim(),p2=($('newPassword2')?.value||'').trim();if(!p||p.length<6)return toast('password minimal 6 karakter.');if(p!==p2)return toast('konfirmasi password tidak sama.');const q=await sb.auth.updateUser({password:p});if(q.error)return toast(q.error.message);closeModal('passwordModal');toast('password berhasil diperbarui.')}
 async function saveProfile(){if(typeof saveProfileChanges==='function')return saveProfileChanges();if(typeof applyProfile==='function')applyProfile();closeModal('accountModal');toast('profil diperbarui.')}
-function applyTheme(theme){const t=theme==='light'?'light':'dark';document.documentElement.setAttribute('data-theme',t);localStorage.setItem('ourmemory_theme',t);const label=$('themeLabel');if(label)label.textContent=t==='light'?'terang':'gelap'}
-function switchTheme(){const current=document.documentElement.getAttribute('data-theme')==='light'?'light':'dark';applyTheme(current==='light'?'dark':'light')}
+function applyTheme(){document.documentElement.setAttribute('data-theme','dark');localStorage.setItem('ourmemory_theme','dark')}
 
-async function init(){applyTheme(localStorage.getItem('ourmemory_theme')||'dark');if(!SUPABASE_URL||!SUPABASE_ANON_KEY)return;sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);const r=await sb.auth.getSession();if(r.data.session)await enter(r.data.session.user);else mode('login')}
+async function init(){applyTheme();if(!SUPABASE_URL||!SUPABASE_ANON_KEY)return;sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);const r=await sb.auth.getSession();if(r.data.session)await enter(r.data.session.user);else mode('login')}
 init();
 </script>
 <script>
