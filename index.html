@@ -925,4 +925,21 @@ function hydrateMemoryVideoThumbs(){
  document.querySelectorAll('#savedGrid .memory-spread-media video').forEach(v=>{v.muted=true;v.playsInline=true;v.preload='auto';});
 }
 </script>
+
+<style id="gallery-polaroid-caption-clarity">
+/* REQUESTED ONLY: make Galeri polaroid captions clearly readable on white cards */
+#profileGrid .tile-caption,
+#profileGrid .tile-note{
+  font-family:'Cormorant Garamond',Georgia,serif!important;
+  font-size:15px!important;
+  font-weight:700!important;
+  line-height:1.4!important;
+  letter-spacing:.2px!important;
+  color:#8f4358!important;
+  text-shadow:none!important;
+}
+#profileGrid .tile-date{
+  color:#6b5b61!important;
+}
+</style>
 </body></html>
