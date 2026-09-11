@@ -664,6 +664,104 @@ input::placeholder,textarea::placeholder{color:var(--read-dim)!important;opacity
 .login-brand-sub,.login-sub,.home-kicker,.top-kicker,.section-head span,.settings-left span,.post-date,.tile-date,.date-settings label,.field label{font-family:'DM Sans',system-ui,sans-serif!important}
 .caption,.detail-note,.view-quote,.diary-quote,.memory-spread-quote,.journey-copy>p{font-weight:500!important}
 </style>
+
+<style id="ourmemory-final-clarity-only">
+/* FINAL CLARITY ONLY — no feature, data, layout, or behavior changes */
+:root{
+  --clarity-main:#fffafb;
+  --clarity-secondary:#eee2e7;
+  --clarity-muted:#c6b8bf;
+  --clarity-icon:#fff3f6;
+}
+html[data-theme="light"]{
+  --clarity-main:#21191c;
+  --clarity-secondary:#493b40;
+  --clarity-muted:#66575d;
+  --clarity-icon:#71384b;
+}
+/* teks yang sebelumnya terlalu samar */
+.post-body,.post-body .caption,.post-body .like-count,.post-body .comments-link,.post-body .post-date,
+.post-user b,.post-user span,.memory-spread-copy h2,.memory-spread-copy p,.memory-spread-date,
+.tile-caption,.tile-note,.tile-date,.section-head h2,.section-head span,.journey-copy p,.timeline-item span,
+.date-settings label,.settings-left b,.settings-left span,.settings-row strong,.home-head p,.top-kicker,.home-kicker,
+.field label,.memory-quote-help,.detail-note,.detail-meta,.view-side-kicker,.view-date,.view-note{
+  opacity:1!important;
+}
+.post-body,.post-body .caption,.post-body .like-count,.post-user b,.memory-spread-copy h2,.memory-spread-copy p,
+.tile-caption,.section-head h2,.journey-copy p,.settings-left b,.home-head p,.detail-note,.view-note{
+  color:var(--clarity-main)!important;
+}
+.post-body .comments-link,.post-body .post-date,.post-user span,.memory-spread-date,.tile-date,.tile-note,
+.section-head span,.timeline-item span,.date-settings label,.settings-left span,.top-kicker,.home-kicker,
+.field label,.memory-quote-help,.detail-meta,.view-date{
+  color:var(--clarity-muted)!important;
+}
+.post-body .caption{font-weight:600!important;text-shadow:0 1px 10px rgba(0,0,0,.18)}
+.post-body .like-count{font-weight:800!important}
+.post-body .comments-link{font-weight:600!important}
+.memory-spread-copy p,.tile-note{font-weight:500!important}
+/* semua icon tombol/navigasi dibuat tegas */
+.side-nav i,.settings-icon,.icon-btn,.post-actions button,.mobile-nav button,.close,.password-toggle,
+.memory-upload-top,.camera-launch,.settings-row strong,.memory-spread-zoom,.memory-spread-type,.tile-type,
+.memory-video-play,.calendar-icon,.login-logo{
+  opacity:1!important;
+  color:var(--clarity-icon)!important;
+  text-shadow:0 1px 10px rgba(0,0,0,.28);
+  filter:none!important;
+}
+.side-nav i{font-size:20px!important;font-weight:800!important}
+.settings-icon{font-size:19px!important;font-weight:900!important;border-color:rgba(255,255,255,.16)!important;box-shadow:0 0 0 1px rgba(255,255,255,.035),0 5px 16px rgba(0,0,0,.22)!important}
+.icon-btn,.post-actions button,.close,.password-toggle{font-weight:900!important}
+.post-actions button{font-size:23px!important}
+.mobile-nav button{font-weight:800!important}
+html[data-theme="light"] .side-nav i,
+html[data-theme="light"] .settings-icon,
+html[data-theme="light"] .icon-btn,
+html[data-theme="light"] .post-actions button,
+html[data-theme="light"] .mobile-nav button,
+html[data-theme="light"] .close,
+html[data-theme="light"] .password-toggle,
+html[data-theme="light"] .settings-row strong{
+  color:var(--clarity-icon)!important;
+  text-shadow:none!important;
+}
+/* angka timeline / hari bersama */
+.days-card strong,#togetherDays,#journeyDaysLabel,.timeline-item b,.timeline-item strong{
+  color:var(--clarity-main)!important;
+  opacity:1!important;
+  font-weight:800!important;
+  text-shadow:0 1px 14px rgba(239,142,158,.22);
+}
+/* label kartu dan elemen kecil jangan dibuat transparan */
+.memory-spread-dear,.view-side-kicker,.memory-spread-quote,.view-quote,.memory-spread-open,
+.eyebrow,.label{opacity:1!important}
+html[data-theme="light"] .post-body .caption,
+html[data-theme="light"] .post-body .like-count,
+html[data-theme="light"] .post-user b,
+html[data-theme="light"] .memory-spread-copy h2,
+html[data-theme="light"] .memory-spread-copy p,
+html[data-theme="light"] .tile-caption,
+html[data-theme="light"] .settings-left b,
+html[data-theme="light"] .home-head p,
+html[data-theme="light"] .detail-note,
+html[data-theme="light"] .view-note{color:var(--clarity-main)!important}
+html[data-theme="light"] .post-body .comments-link,
+html[data-theme="light"] .post-body .post-date,
+html[data-theme="light"] .post-user span,
+html[data-theme="light"] .memory-spread-date,
+html[data-theme="light"] .tile-date,
+html[data-theme="light"] .tile-note,
+html[data-theme="light"] .section-head span,
+html[data-theme="light"] .timeline-item span,
+html[data-theme="light"] .date-settings label,
+html[data-theme="light"] .settings-left span,
+html[data-theme="light"] .top-kicker,
+html[data-theme="light"] .home-kicker,
+html[data-theme="light"] .field label,
+html[data-theme="light"] .memory-quote-help,
+html[data-theme="light"] .detail-meta,
+html[data-theme="light"] .view-date{color:var(--clarity-muted)!important}
+</style>
 </head>
 <body>
 <section id="loginPage" class="login-page">
@@ -703,7 +801,7 @@ input::placeholder,textarea::placeholder{color:var(--read-dim)!important;opacity
     <button data-page="settings" onclick="page('settings')"><i>⚙</i> Pengaturan</button>
   </nav><div class="profile-mini"><div id="sideAvatar" class="avatar">♡</div><div><b id="sideName">username</b><span id="sideEmail">akun</span></div></div></aside>
   <main>
-    <header class="topbar"><div class="top-title-wrap"><div id="topTitle" class="top-title">Kenangan</div><span class="top-kicker">OUR PRIVATE MEMORY SPACE</span></div><div class="top-actions"><button class="memory-upload-top" onclick="openAdd()">＋ simpan kenangan</button><button id="installAppBtn" class="memory-upload-top hidden" onclick="installOurMemory()">＋ pasang aplikasi</button><button class="icon-btn" title="menu" onclick="page('settings')">⋯</button></div></header>
+    <header class="topbar"><div class="top-title-wrap"><div id="topTitle" class="top-title">Kenangan</div><span class="top-kicker">OUR PRIVATE MEMORY SPACE</span></div><div class="top-actions"><button id="installAppBtn" class="memory-upload-top hidden" onclick="installOurMemory()">＋ pasang aplikasi</button><button class="icon-btn" title="menu" onclick="page('settings')">⋯</button></div></header>
 
     <section id="page-home">
       <div class="romantic-cover">
