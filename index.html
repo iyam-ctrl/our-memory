@@ -560,6 +560,32 @@ body{font-family:'Cormorant Garamond',Georgia,serif;letter-spacing:.01em}button,
 #savedGrid .memory-video-thumb{width:100%;height:100%;display:block;object-fit:cover;background:#eee;pointer-events:none}
 #savedGrid .memory-video-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:rgba(35,24,28,.72);color:#fff;font:900 20px/1 Arial,sans-serif;padding-left:3px;box-shadow:0 8px 24px rgba(0,0,0,.22);pointer-events:none}
 </style>
+
+<style id="ourmemory-pink-white">
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+:root{
+ --bg:#fff8fa!important;--surface:#ffffff!important;--surface2:#fff0f4!important;--surface3:#ffe5ec!important;
+ --line:#f3cbd5!important;--text:#4b3038!important;--muted:#9b747f!important;
+ --accent:#e98ca5!important;--accent2:#f6b7c8!important;--good:#7aa88c!important;--danger:#d96a83!important;
+ --paper:#fffdfd!important;--ink:#4b3038!important;--rose:#e98ca5!important;--rose2:#f6b7c8!important;
+ --shadow:0 20px 55px rgba(194,91,117,.12)!important;--nav:rgba(255,255,255,.94)!important;
+}
+html,body,#app{background:var(--bg)!important;color:var(--text)!important}
+body,body *{font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif!important}
+h1,h2,h3,h4,h5,h6,p,.brand,.top-title,.home-head h1,.section-head h2,.caption,.detail-note,.view-quote,.diary-quote,.memory-spread-copy,.journey-copy,.journey-copy h1,.timeline-item b{font-family:'Cormorant Garamond',Georgia,serif!important}
+button,input,textarea,select{font-family:'DM Sans',system-ui,sans-serif!important}
+button,.soft-btn,.danger,.hero-upload,.primary,.camera-launch{border-color:var(--line)!important}
+button,.soft-btn,.hero-upload,.primary,.camera-launch{background:linear-gradient(135deg,var(--accent),var(--accent2))!important;color:#fff!important}
+input,textarea,select{background:#fff!important;color:var(--text)!important;border-color:var(--line)!important}
+.side-nav,.mobile-nav,.topbar,.settings-card,.modal-box,.journey,.post,.feed .post,.memory-spread{background:#fff!important;border-color:var(--line)!important}
+.side-nav button.on{background:linear-gradient(90deg,#ffe8ee,transparent)!important;box-shadow:inset 2px 0 var(--accent)!important;color:var(--text)!important}
+.eyebrow,.label,.home-kicker,.top-kicker,.memory-spread-dear,.view-side-kicker,.section-head span,.muted,.tile-date,.post-date{color:var(--muted)!important}
+.memory-spread-quote,.view-quote,.diary-quote{color:#7a4b59!important}
+.tile,.memory-spread,.post{box-shadow:0 14px 45px rgba(194,91,117,.09)!important}
+.profile-cover{background:radial-gradient(circle at 75% 20%,rgba(233,140,165,.28),transparent 20%),linear-gradient(135deg,#ffdce6,#fff)!important}
+.journey{background:linear-gradient(135deg,#fff,#fff1f5)!important;border-color:#f0c2ce!important}
+.journey:before{color:rgba(233,140,165,.55)!important}
+</style>
 </head>
 <body>
 <section id="loginPage" class="login-page">
@@ -697,9 +723,11 @@ const memoryQuotes=["KADANG, YANG PALING INGIN KITA SIMPAN BUKAN HARINYA, TAPI R
 function memorySpreadTile(x){const media=x.type==='video'?`<video class="memory-video-thumb" src="${esc(x.media_url)}" muted playsinline preload="metadata"></video><span class="memory-video-play">▶</span>`:`<img src="${esc(x.media_url)}" loading="lazy" alt="${esc(x.title||'kenangan')}">`;return `<article class="memory-spread" onclick="viewMemory('${x.id}')"><div class="memory-spread-media">${media}<span class="memory-spread-type">${x.type==='video'?'VIDEO':'FOTO'}</span><span class="memory-spread-zoom">⌕</span></div><div class="memory-spread-copy"><div class="memory-spread-dear">DEAR US,</div><div class="memory-spread-quote" style="display:block!important;visibility:visible!important;opacity:1!important;min-height:1em!important;color:#6b4f55!important;font:italic 16px/1.7 Georgia,serif!important;margin:0 0 20px!important;">${esc(x.note||'SETIAP MOMEN PUNYA CERITA SENDIRI.')}</div><div class="memory-spread-kicker">OUR MEMORY · ${x.type==='video'?'VIDEO':'PHOTO'}</div><h2>${esc(x.title||'KENANGAN TANPA JUDUL')}</h2><div class="memory-spread-date">${esc(dateFmt(x.date))}</div><p>${esc(x.note||'Belum ada cerita untuk kenangan ini.')}</p><div class="memory-spread-open">BUKA KENANGAN →</div></div></article>`}
 
 function renderFavorit(){const g=$('savedGrid');if(!g)return;const a=memories||[];g.innerHTML=a.length?a.map(memorySpreadTile).join(''):`<div class="empty">belum ada foto atau video yang tersimpan.</div>`;setTimeout(hydrateMemoryVideoThumbs,60)}
-function renderJourney(){const d=JSON.parse(localStorage.getItem('ourmemory_journey_'+(user?.id||'guest'))||'{}');if($('meetDate'))$('meetDate').value=d.meet||'';if($('relationDate'))$('relationDate').value=d.relation||'';if($('meetDateLabel'))$('meetDateLabel').textContent=d.meet?dateFmt(d.meet):'BELUM DIATUR';if($('relationDateLabel'))$('relationDateLabel').textContent=d.relation?dateFmt(d.relation):'BELUM DIATUR';if($('journeyDaysLabel'))$('journeyDaysLabel').textContent=d.relation?Math.max(0,Math.floor((Date.now()-new Date(d.relation+'T00:00:00'))/86400000))+' HARI BERSAMA':''}
-function saveJourneyDates(){const meet=$('meetDate').value,relation=$('relationDate').value;if(meet&&relation&&relation<meet)return toast('tanggal jadian tidak dapat lebih awal dari tanggal pertemuan.');localStorage.setItem('ourmemory_journey_'+user.id,JSON.stringify({meet,relation}));renderJourney();updateTogetherDays();toast('tanggal perjalanan berhasil disimpan.')}
-function updateTogetherDays(){const d=JSON.parse(localStorage.getItem('ourmemory_journey_'+(user?.id||'guest'))||'{}');if($('togetherDays'))$('togetherDays').textContent=d.relation?Math.max(0,Math.floor((Date.now()-new Date(d.relation+'T00:00:00'))/86400000)).toLocaleString('id-ID')+' HARI':'—'}
+const JOURNEY_SHARED_KEY='ourmemory_journey_shared';
+function getJourneyDates(){try{const shared=JSON.parse(localStorage.getItem(JOURNEY_SHARED_KEY)||'null');if(shared&&typeof shared==='object')return shared}catch(e){}if(user?.id){try{const legacy=JSON.parse(localStorage.getItem('ourmemory_journey_'+user.id)||'null');if(legacy&&typeof legacy==='object'&&(legacy.meet||legacy.relation)){localStorage.setItem(JOURNEY_SHARED_KEY,JSON.stringify(legacy));return legacy}}catch(e){}}return {}}
+function renderJourney(){const d=getJourneyDates();if($('meetDate'))$('meetDate').value=d.meet||'';if($('relationDate'))$('relationDate').value=d.relation||'';if($('meetDateLabel'))$('meetDateLabel').textContent=d.meet?dateFmt(d.meet):'BELUM DIATUR';if($('relationDateLabel'))$('relationDateLabel').textContent=d.relation?dateFmt(d.relation):'BELUM DIATUR';if($('journeyDaysLabel'))$('journeyDaysLabel').textContent=d.relation?Math.max(0,Math.floor((Date.now()-new Date(d.relation+'T00:00:00'))/86400000))+' HARI BERSAMA':''}
+function saveJourneyDates(){const meet=$('meetDate').value,relation=$('relationDate').value;if(meet&&relation&&relation<meet)return toast('tanggal jadian tidak dapat lebih awal dari tanggal pertemuan.');localStorage.setItem(JOURNEY_SHARED_KEY,JSON.stringify({meet,relation}));renderJourney();updateTogetherDays();toast('tanggal perjalanan berhasil disimpan.')}
+function updateTogetherDays(){const d=getJourneyDates();if($('togetherDays'))$('togetherDays').textContent=d.relation?Math.max(0,Math.floor((Date.now()-new Date(d.relation+'T00:00:00'))/86400000)).toLocaleString('id-ID')+' HARI':'—'}
 function renderAll(){applyProfile();renderProfileGrid();renderFavorit();renderJourney();updateTogetherDays()}
 function viewMemory(id){
  const x=memories.find(y=>y.id===id); if(!x)return;
