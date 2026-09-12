@@ -208,4 +208,9 @@ create policy "owner insert moments" on public.moments for insert to authenticat
 drop policy if exists "owner delete moments" on public.moments;
 create policy "owner delete moments" on public.moments for delete to authenticated using(auth.uid()=user_id);
 
+
+-- thumbnail_path dipakai untuk thumbnail ringan foto/video agar galeri, memories,
+-- dan detail tidak perlu memuat file asli hanya untuk preview.
+alter table if exists public.memories add column if not exists thumbnail_path text;
+
 notify pgrst,'reload schema';

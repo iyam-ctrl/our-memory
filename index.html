@@ -881,14 +881,28 @@ function closeModal(id){const el=$(id);if(el)el.classList.add('hidden');if(id===
 function openAdd(){if(!user)return toast('silakan masuk terlebih dahulu.');$('memoryFile').value='';$('memoryTitle').value='';$('memoryDate').value=new Date().toISOString().slice(0,10);$('memoryAlbum').value='';$('memoryNote').value='';$('addModal').classList.remove('hidden')}
 let profilesCache={};
 async function enrichProfiles(){const ids=[...new Set(memories.map(x=>x.user_id).filter(Boolean))];if(!ids.length)return;const q=await sb.from('profiles').select('user_id,username,bio').in('user_id',ids);if(!q.error)(q.data||[]).forEach(p=>profilesCache[p.user_id]=p)}
+function publicStorageUrl(path){
+ if(!path||!sb)return '';
+ try{return sb.storage.from(BUCKET).getPublicUrl(path).data?.publicUrl||''}catch(e){return ''}
+}
+function imageThumbUrl(url){
+ if(!url)return '';
+ try{return url+(url.includes('?')?'&':'?')+'width=480&height=480&resize=cover'}catch(e){return url}
+}
+function thumbImgAttrs(x,loading='lazy',priority='auto'){const src=esc(x.thumb_url||x.media_url||'');const full=esc(x.media_url||'');const fallback=(x.type==='image'&&x.thumb_url&&x.thumb_url!==x.media_url&&full)?` onerror="if(this.dataset.fallback!=='1'){this.dataset.fallback='1';this.src='${full}';return}this.closest('.tile-media')?.classList.add('media-load-error')"`:'';return `src="${src}" loading="${loading}" decoding="async" fetchpriority="${priority}"${fallback}`}
 async function resolveMemoryMedia(){
  const items=(memories||[]).filter(x=>x.storage_path);
  if(!items.length)return;
  items.forEach(x=>{
-   try{
-     const pub=sb.storage.from(BUCKET).getPublicUrl(x.storage_path).data?.publicUrl;
-     if(pub)x.media_url=pub;
-   }catch(e){}
+   const pub=x.media_url||publicStorageUrl(x.storage_path);
+   if(pub)x.media_url=pub;
+   if(x.thumbnail_path){
+     const t=publicStorageUrl(x.thumbnail_path);
+     if(t)x.thumb_url=t;
+   }else if(x.type==='image'&&pub){
+     x.thumb_url=imageThumbUrl(pub);
+   }
+   if(!x.thumb_url)x.thumb_url=x.media_url||'';
  });
 }
 
@@ -896,11 +910,12 @@ function ownerName(id){if(id===user?.id)return profile?.username||user?.user_met
 async function loadMemories(){const q=await sb.from('memories').select('*').order('date',{ascending:false}).order('created_at',{ascending:false});if(q.error){toast('kenangan belum dapat dimuat: '+q.error.message);return false}memories=q.data||[];await resolveMemoryMedia();await enrichProfiles();return true}
 async function loadMoments(){const q=await sb.from('moments').select('*').order('created_at',{ascending:false});if(q.error){moments=[];console.warn(q.error.message);return false}moments=q.data||[];return true}
 async function loadAll(){await loadMemories();renderAll()}
-function tile(x,i=0){const src=esc(x.media_url||'');const media=x.type==='video'?`<video class="gallery-media-video" src="${src}" muted playsinline preload="metadata" onloadedmetadata="try{this.currentTime=.01}catch(e){}" onerror="this.closest('.tile-media')?.classList.add('media-load-error')"></video><span class="video-thumb-play">▶</span>`:`<img src="${src}" loading="${i<8?'eager':'lazy'}" decoding="async" fetchpriority="${i<4?'high':'auto'}" alt="${esc(x.title||'kenangan')}" onerror="this.closest('.tile-media')?.classList.add('media-load-error')">`;const own=x.user_id===user?.id;const actions=own?`<div class="tile-actions" onclick="event.stopPropagation()"><button type="button" class="tile-edit-btn" onclick="openTileEdit('${x.id}')">EDIT</button><button type="button" class="tile-delete-btn" onclick="openTileDelete('${x.id}')">HAPUS</button></div>`:'';return `<article class="tile" onclick="viewMemory('${x.id}')"><div class="tile-media">${media}<span class="tile-type">${x.type==='video'?'VIDEO':'FOTO'}</span></div><div class="tile-caption">${esc(x.title||'Kenangan tanpa judul')}</div><div class="tile-date">${esc(dateFmt(x.date))}</div><div class="tile-note">${esc(x.note||'')}</div>${actions}</article>`}
+function tile(x,i=0){const src=esc(x.media_url||''),thumb=esc(x.thumb_url||src);const media=x.type==='video'&&x.thumb_url?`<img ${thumbImgAttrs(x,i<8?'eager':'lazy',i<4?'high':'auto')} alt="${esc(x.title||'kenangan')}"><span class="video-thumb-play">▶</span>`:x.type==='video'?`<video class="gallery-media-video" src="${src}" muted playsinline preload="metadata" onloadedmetadata="try{this.currentTime=.01}catch(e){}" onerror="this.closest('.tile-media')?.classList.add('media-load-error')"></video><span class="video-thumb-play">▶</span>`:`<img ${thumbImgAttrs(x,i<8?'eager':'lazy',i<4?'high':'auto')} alt="${esc(x.title||'kenangan')}">`;const own=x.user_id===user?.id;const actions=own?`<div class="tile-actions" onclick="event.stopPropagation()"><button type="button" class="tile-edit-btn" onclick="openTileEdit('${x.id}')">EDIT</button><button type="button" class="tile-delete-btn" onclick="openTileDelete('${x.id}')">HAPUS</button></div>`:'';return `<article class="tile" onclick="viewMemory('${x.id}')"><div class="tile-media">${media}<span class="tile-type">${x.type==='video'?'VIDEO':'FOTO'}</span></div><div class="tile-caption">${esc(x.title||'Kenangan tanpa judul')}</div><div class="tile-date">${esc(dateFmt(x.date))}</div><div class="tile-note">${esc(x.note||'')}</div>${actions}</article>`}
 
 let galleryFilter='all';function setGalleryFilter(type,btn){galleryFilter=type;document.querySelectorAll('#page-profile .filter-bar button').forEach(b=>b.classList.remove('on'));btn?.classList.add('on');filterGallerySearch()}function filterGallerySearch(){const q=($('gallerySearch')?.value||'').trim().toLowerCase();let list=galleryFilter==='all'?memories:galleryFilter==='video'?memories.filter(x=>x.type==='video'):memories.filter(x=>x.type==='image');if(q)list=list.filter(x=>[x.title,x.note,x.album,dateFmt(x.date),ownerName(x.user_id)].some(v=>String(v||'').toLowerCase().includes(q)));$('profileGrid').innerHTML=list.length?list.map((x,i)=>tile(x,i)).join(''):`<div class="empty">belum ada momen yang cocok.</div>`;setTimeout(warmGalleryMedia,40)}
 function renderProfileGrid(){if($('profileGrid')){const active=document.querySelector('#page-profile .filter-bar button.on');filterGallerySearch();if(!active)document.querySelector('#page-profile .filter-bar button')?.classList.add('on')}renderHomeRecent()}function renderHomeRecent(){const g=$('homeRecentGrid');if(!g)return;const list=(memories||[]).slice(0,5);g.innerHTML=list.length?list.map((x,i)=>homeRecentTile(x,i)).join(''):`<div class="empty">belum ada kenangan yang tersimpan.</div>`;setTimeout(warmGalleryMedia,40)}
-function homeRecentTile(x,i=0){const media=x.type==='video'?`<video src="${esc(x.media_url)}" muted playsinline preload="metadata" onloadedmetadata="try{this.currentTime=.01}catch(e){}"></video><span class="recent-play">▶</span>`:`<img src="${esc(x.media_url)}" loading="${i<5?'eager':'lazy'}" decoding="async" alt="${esc(x.title||'kenangan')}">`;return `<article class="home-recent-card" onclick="viewMemory('${x.id}')"><div class="home-recent-media">${media}</div><div class="home-recent-copy"><b>${esc(x.title||'Kenangan')}</b><span>${esc(dateFmt(x.date))}</span></div></article>`}
+function homeRecentTile(x,i=0){const media=x.type==='video'&&x.thumb_url?`<img ${thumbImgAttrs(x,'eager','high')} alt="${esc(x.title||'kenangan')}"><span class="recent-play">▶</span>`:x.type==='video'?`<video src="${esc(x.media_url)}" muted playsinline preload="metadata" onloadedmetadata="try{this.currentTime=.01}catch(e){}"></video><span class="recent-play">▶</span>`:`<img ${thumbImgAttrs(x,'eager','high')} alt="${esc(x.title||'kenangan')}">`;return `<article class="home-recent-card" onclick="viewMemory('${x.id}')"><div class="home-recent-media">${media}</div><div class="home-recent-copy"><b>${esc(x.title||'Kenangan')}</b><span>${esc(dateFmt(x.date))}</span></div></article>`}
+
 
 function renderFavorit(){
  const g=$('savedGrid');if(!g)return;
@@ -917,10 +932,10 @@ function renderFavorit(){
    <div class="target-time-item"><span>☆</span><div><b>Hari Ini</b><small>${esc(dateFmt(new Date().toISOString().slice(0,10)))}</small></div></div>
  </div>`;
  const polaroid=latest?`<article class="target-memory-polaroid" onclick="viewMemory('${latest.id}')">
-   <div class="target-polaroid-media">${latest.type==='video'?`<video src="${esc(latest.media_url)}" muted playsinline preload="metadata" class="target-memory-video" data-memory-video="1"></video><span class="target-polaroid-play">▶</span>`:`<img src="${esc(latest.media_url)}" loading="eager" fetchpriority="high" decoding="async" alt="${esc(latest.title||'kenangan')}">`}</div>
+   <div class="target-polaroid-media">${latest.type==='video'&&latest.thumb_url?`<img ${thumbImgAttrs(latest,'eager','high')} alt="${esc(latest.title||'kenangan')}"><span class="target-polaroid-play">▶</span>`:latest.type==='video'?`<video src="${esc(latest.media_url)}" muted playsinline preload="metadata" class="target-memory-video" data-memory-video="1"></video><span class="target-polaroid-play">▶</span>`:`<img ${thumbImgAttrs(latest,'eager','high')} alt="${esc(latest.title||'kenangan')}">`}</div>
    <div class="target-polaroid-caption">${esc(latest.note||latest.title||'Dan masih banyak cerita lainnya... ♡')}</div>
  </article>`:`<div class="target-memory-polaroid empty-polaroid"><div>♡</div><span>belum ada kenangan</span></div>`;
- const cards=list.slice(1).map((x,i)=>`<article class="target-mini-memory" onclick="viewMemory('${x.id}')"><div class="target-mini-media">${x.type==='video'?`<video src="${esc(x.media_url)}" muted playsinline preload="metadata" class="target-memory-video" data-memory-video="1"></video><span class="target-mini-play">▶</span>`:`<img src="${esc(x.media_url)}" loading="lazy" decoding="async" alt="${esc(x.title||'kenangan')}">`}</div><div><b>${esc(x.title||'Kenangan')}</b><small>${esc(dateFmt(x.date))}</small></div></article>`).join('');
+ const cards=list.slice(1).map((x,i)=>`<article class="target-mini-memory" onclick="viewMemory('${x.id}')"><div class="target-mini-media">${x.type==='video'&&x.thumb_url?`<img ${thumbImgAttrs(x,'lazy','auto')} alt="${esc(x.title||'kenangan')}"><span class="target-mini-play">▶</span>`:x.type==='video'?`<video src="${esc(x.media_url)}" muted playsinline preload="metadata" class="target-memory-video" data-memory-video="1"></video><span class="target-mini-play">▶</span>`:`<img ${thumbImgAttrs(x,'lazy','auto')} alt="${esc(x.title||'kenangan')}">`}</div><div><b>${esc(x.title||'Kenangan')}</b><small>${esc(dateFmt(x.date))}</small></div></article>`).join('');
  g.innerHTML=`<div class="target-memory-main">${timeline}<div class="target-memory-polaroid-wrap">${polaroid}</div></div>${cards?`<div class="target-memory-secondary">${cards}</div>`:''}`;
  setTimeout(()=>hydrateMemoryVideoThumbs(),40);
 }
@@ -955,7 +970,7 @@ function viewMemory(id){
 function renderViewThumbs(selectedId){
  const g=$('viewThumbs');if(!g)return;
  const list=memories||[];
- g.innerHTML=list.map(x=>`<button type="button" class="view-thumb ${String(x.id)===String(selectedId)?'on':''}" onclick="selectViewMemory('${x.id}')">${x.type==='video'?`<video src="${esc(x.media_url)}" muted playsinline preload="metadata"></video><span>▶</span>`:`<img src="${esc(x.media_url)}" loading="lazy" decoding="async" alt="">`}</button>`).join('');
+ g.innerHTML=list.map(x=>`<button type="button" class="view-thumb ${String(x.id)===String(selectedId)?'on':''}" onclick="selectViewMemory('${x.id}')">${x.type==='video'&&x.thumb_url?`<img ${thumbImgAttrs(x,'eager','auto')} alt=""><span>▶</span>`:x.type==='video'?`<video src="${esc(x.media_url)}" muted playsinline preload="metadata"></video><span>▶</span>`:`<img ${thumbImgAttrs(x,'eager','auto')} alt="">`}</button>`).join('');
  setTimeout(()=>{g.querySelectorAll('video').forEach(v=>{v.muted=true;v.playsInline=true;v.preload='metadata';v.addEventListener('loadedmetadata',()=>{try{v.currentTime=.01}catch(e){}},{once:true})})},20);
 }
 function selectViewMemory(id){
@@ -969,7 +984,7 @@ function renderDetailMedia(){
  activeMemory=x;
  const media=x.type==='video'?`<video controls playsinline preload="auto" src="${esc(x.media_url)}"></video>`:`<img src="${esc(x.media_url)}" loading="eager" fetchpriority="high" decoding="async" alt="${esc(x.title||'kenangan')}">`;
  viewer.innerHTML=`<div class="detail-media-stage"><button class="detail-close" type="button" onclick="page('profile')" aria-label="Tutup">×</button>${media}<div class="detail-media-info"><div class="detail-type">${x.type==='video'?'VIDEO':'FOTO'}</div><h2>${esc(x.title||'Kenangan')}</h2><span>${esc(dateFmt(x.date))}</span><p>${esc(x.note||'')}</p></div></div>`;
- thumbs.innerHTML=memories.map(m=>`<button type="button" class="detail-thumb ${String(m.id)===String(x.id)?'on':''}" onclick="selectDetailMemory('${m.id}')">${m.type==='video'?`<video src="${esc(m.media_url)}" muted playsinline preload="metadata"></video><i>▶</i>`:`<img src="${esc(m.media_url)}" loading="lazy" decoding="async" alt="">`}</button>`).join('');
+ thumbs.innerHTML=memories.map(m=>`<button type="button" class="detail-thumb ${String(m.id)===String(x.id)?'on':''}" onclick="selectDetailMemory('${m.id}')">${m.type==='video'&&m.thumb_url?`<img ${thumbImgAttrs(m,'eager','auto')} alt=""><i>▶</i>`:m.type==='video'?`<video src="${esc(m.media_url)}" muted playsinline preload="metadata"></video><i>▶</i>`:`<img src="${esc(m.thumb_url||m.media_url)}" loading="eager" decoding="async" alt="">`}</button>`).join('');
  setTimeout(()=>{thumbs.querySelectorAll('video').forEach(v=>{v.muted=true;v.playsInline=true;v.preload='metadata';v.addEventListener('loadedmetadata',()=>{try{v.currentTime=.01}catch(e){}},{once:true})})},20);
 }
 function selectDetailMemory(id){const x=memories.find(y=>String(y.id)===String(id));if(!x)return;activeMemory=x;renderDetailMedia()}
@@ -985,16 +1000,47 @@ function openTileDelete(id){const x=memories.find(y=>String(y.id)===String(id));
 
 async function saveEdit(){const q=await sb.from('memories').update({title:$('editTitle').value.trim()||'Kenangan tanpa judul',date:$('editDate').value,album:$('editAlbum').value.trim()||'Umum',note:$('editNote').value.trim()}).eq('id',$('editId').value).eq('user_id',user.id);if(q.error)return toast('perubahan belum tersimpan: '+q.error.message);closeModal('editModal');await loadMemories();renderAll();toast('perubahan berhasil disimpan.')}
 async function toggleFavorite(id){const x=memories.find(y=>y.id===id);if(!x||x.user_id!==user.id)return toast('hanya pemilik yang dapat mengubah favorit.');const q=await sb.from('memories').update({fav:!x.fav}).eq('id',id).eq('user_id',user.id);if(q.error)return toast(q.error.message);await loadMemories();renderAll();if(activeMemory?.id===id)viewMemory(id)}
-async function deleteMemory(){if(!activeMemory||activeMemory.user_id!==user.id)return toast('Anda hanya dapat menghapus kenangan milik Anda.');if(!confirm('apakah Anda yakin ingin menghapus kenangan ini?'))return;const q=await sb.from('memories').delete().eq('id',activeMemory.id).eq('user_id',user.id);if(q.error)return toast('kenangan belum dapat dihapus: '+q.error.message);if(activeMemory.storage_path)await sb.storage.from(BUCKET).remove([activeMemory.storage_path]);closeModal('viewModal');await loadMemories();renderAll();toast('kenangan berhasil dihapus.')}
+async function deleteMemory(){if(!activeMemory||activeMemory.user_id!==user.id)return toast('Anda hanya dapat menghapus kenangan milik Anda.');if(!confirm('apakah Anda yakin ingin menghapus kenangan ini?'))return;const q=await sb.from('memories').delete().eq('id',activeMemory.id).eq('user_id',user.id);if(q.error)return toast('kenangan belum dapat dihapus: '+q.error.message);if(activeMemory.storage_path)await sb.storage.from(BUCKET).remove([activeMemory.storage_path]);if(activeMemory.thumbnail_path)await sb.storage.from(BUCKET).remove([activeMemory.thumbnail_path]);closeModal('viewModal');await loadMemories();renderAll();toast('kenangan berhasil dihapus.')}
 function downloadMemory(){if(!activeMemory)return;const a=document.createElement('a');a.href=activeMemory.media_url;a.download=(activeMemory.title||'ourmemory').replace(/[^a-z0-9_-]+/gi,'-');a.target='_blank';document.body.appendChild(a);a.click();a.remove()}
 function prepareUploadPage(){if($('pageMemoryDate'))$('pageMemoryDate').value=new Date().toISOString().slice(0,10);if($('pageMemoryTitle'))$('pageMemoryTitle').value='';if($('pageMemoryNote'))$('pageMemoryNote').value='';if($('pageMemoryAlbum'))$('pageMemoryAlbum').value='';const f=$('memoryFile');if(f&&!f.dataset.pageBound){f.dataset.pageBound='1';f.addEventListener('change',previewUploadPage)}}
 function previewUploadPage(){const f=$('memoryFile')?.files?.[0],box=$('uploadPagePreviewMedia'),cap=$('uploadPreviewCaption');if(!f||!box)return;const url=URL.createObjectURL(f);if(f.type.startsWith('video/'))box.innerHTML=`<video src="${url}" muted playsinline autoplay loop></video>`;else box.innerHTML=`<img src="${url}" alt="preview">`;if(cap)cap.textContent=(($('pageMemoryNote')?.value||$('pageMemoryTitle')?.value||'Momen indah bersama kamu ♡').trim()).slice(0,90)}
 async function uploadMemoryFromPage(){const f=$('memoryFile')?.files?.[0];if(!f)return toast('silakan pilih foto atau video terlebih dahulu.');$('memoryTitle').value=$('pageMemoryTitle')?.value||'';$('memoryNote').value=$('pageMemoryNote')?.value||'';$('memoryDate').value=$('pageMemoryDate')?.value||new Date().toISOString().slice(0,10);$('memoryAlbum').value=$('pageMemoryAlbum')?.value||'';await uploadMemory(true)}
-async function uploadMemory(fromPage=false){const f=$('memoryFile')?.files?.[0];if(!f)return toast('silakan pilih foto atau video terlebih dahulu.');if(!f.type.startsWith('image/')&&!f.type.startsWith('video/'))return toast('format file belum didukung.');if(f.size>100*1024*1024)return toast('ukuran file maksimal 100 MB.');const id=crypto.randomUUID(),ext=(f.name.split('.').pop()||'bin').toLowerCase(),path=user.id+'/'+id+'.'+ext;toast('sedang menyimpan kenangan...');const u=await sb.storage.from(BUCKET).upload(path,f,{upsert:false,contentType:f.type});if(u.error)return toast('upload gagal: '+u.error.message);const pub=sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;const q=await sb.from('memories').insert({id,user_id:user.id,title:$('memoryTitle').value.trim()||'Kenangan tanpa judul',date:$('memoryDate').value||new Date().toISOString().slice(0,10),album:$('memoryAlbum').value.trim()||'Umum',note:$('memoryNote').value.trim(),type:f.type.startsWith('video/')?'video':'image',storage_path:path,media_url:pub,fav:false});if(q.error){await sb.storage.from(BUCKET).remove([path]);return toast('data kenangan belum tersimpan: '+q.error.message)}if(fromPage){await loadMemories();renderAll();if($('pageMemoryTitle'))$('pageMemoryTitle').value='';if($('pageMemoryNote'))$('pageMemoryNote').value='';if($('pageMemoryAlbum'))$('pageMemoryAlbum').value='';$('memoryFile').value='';prepareUploadPage();toast('kenangan berhasil disimpan.')}else{closeModal('addModal');await loadMemories();renderAll();toast('kenangan berhasil disimpan.')}}
-
-async function startMemoryRealtime(){if(!sb)return;if(window.memoryChannel)await sb.removeChannel(window.memoryChannel);window.memoryChannel=sb.channel('ourmemory-memory-live').on('postgres_changes',{event:'*',schema:'public',table:'memories'},async()=>{await loadMemories();renderAll()}).subscribe()}
-
-async function page(p){const pages=['home','search','moments','profile','upload','settings','saved','journey','detail'];const layer=$('pageTransitionLayer');layer?.classList.remove('on');pages.forEach(x=>$('page-'+x)?.classList.toggle('hidden',x!==p));document.querySelectorAll('.side-nav button').forEach(b=>b.classList.toggle('on',b.dataset.page===p));document.querySelectorAll('.desktop-top-nav button').forEach(b=>b.classList.toggle('on',b.dataset.page===p));document.querySelectorAll('.mobile-nav button[data-mobile]').forEach(b=>b.classList.toggle('on',b.dataset.mobile===p));const active=$('page-'+p);if(active){active.classList.remove('page-animated');void active.offsetWidth;active.classList.add('page-animated')}if(p==='upload')prepareUploadPage();if(p==='profile'){galleryFilter='all';document.querySelectorAll('#page-profile .filter-bar button').forEach((b,i)=>b.classList.toggle('on',i===0));if($('gallerySearch'))$('gallerySearch').value='';filterGallerySearch()}if(p==='saved')renderFavorit();if(p==='journey'){renderJourney();updateTogetherDays()}if(p==='detail'){renderDetailMedia()}if(p==='home')updateTogetherDays();window.scrollTo({top:0,behavior:'smooth'});if(user){renderAll();Promise.allSettled([loadMemories(),p==='journey'?loadJourneyDates():Promise.resolve()]).then(()=>{renderAll();if(p==='saved')renderFavorit()})}}
+async function makeUploadThumbnail(file,isVideo){
+ try{
+  const max=720;
+  if(!isVideo){
+   const img=await new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=URL.createObjectURL(file)});
+   const scale=Math.min(1,max/Math.max(img.naturalWidth||img.width,img.naturalHeight||img.height));
+   const c=document.createElement('canvas');c.width=Math.max(1,Math.round((img.naturalWidth||img.width)*scale));c.height=Math.max(1,Math.round((img.naturalHeight||img.height)*scale));
+   c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+   return await new Promise(r=>c.toBlob(r,'image/jpeg',.78));
+  }
+  const url=URL.createObjectURL(file);
+  const v=document.createElement('video');v.muted=true;v.playsInline=true;v.preload='metadata';v.src=url;
+  await new Promise((resolve,reject)=>{v.onloadedmetadata=resolve;v.onerror=reject});
+  const target=Math.min(Math.max((v.duration||1)*.01,.01),Math.max((v.duration||1)-.05,.01));
+  await new Promise((resolve,reject)=>{v.onseeked=resolve;v.onerror=reject;try{v.currentTime=target}catch(e){resolve()}});
+  const scale=Math.min(1,max/Math.max(v.videoWidth||1,v.videoHeight||1));
+  const c=document.createElement('canvas');c.width=Math.max(1,Math.round((v.videoWidth||1)*scale));c.height=Math.max(1,Math.round((v.videoHeight||1)*scale));
+  c.getContext('2d').drawImage(v,0,0,c.width,c.height);URL.revokeObjectURL(url);
+  return await new Promise(r=>c.toBlob(r,'image/jpeg',.78));
+ }catch(e){return null}
+}
+async function uploadMemory(fromPage=false){
+ const f=$('memoryFile')?.files?.[0];if(!f)return toast('silakan pilih foto atau video terlebih dahulu.');
+ const isVideo=f.type.startsWith('video/');if(!f.type.startsWith('image/')&&!isVideo)return toast('format file belum didukung.');
+ if(f.size>100*1024*1024)return toast('ukuran file maksimal 100 MB.');
+ const id=crypto.randomUUID(),ext=(f.name.split('.').pop()||'bin').toLowerCase(),path=user.id+'/'+id+'.'+ext,thumbPath=user.id+'/'+id+'_thumb.jpg';
+ toast('sedang menyimpan kenangan...');
+ const u=await sb.storage.from(BUCKET).upload(path,f,{upsert:false,contentType:f.type});if(u.error)return toast('upload gagal: '+u.error.message);
+ let thumbnailPath=null;
+ const thumbBlob=await makeUploadThumbnail(f,isVideo);
+ if(thumbBlob){const tu=await sb.storage.from(BUCKET).upload(thumbPath,thumbBlob,{upsert:false,contentType:'image/jpeg'});if(!tu.error)thumbnailPath=thumbPath}
+ const pub=publicStorageUrl(path);
+ const q=await sb.from('memories').insert({id,user_id:user.id,title:$('memoryTitle').value.trim()||'Kenangan tanpa judul',date:$('memoryDate').value||new Date().toISOString().slice(0,10),album:$('memoryAlbum').value.trim()||'Umum',note:$('memoryNote').value.trim(),type:isVideo?'video':'image',storage_path:path,thumbnail_path:thumbnailPath,media_url:pub,fav:false});
+ if(q.error){await sb.storage.from(BUCKET).remove([path]);if(thumbnailPath)await sb.storage.from(BUCKET).remove([thumbnailPath]);return toast('data kenangan belum tersimpan: '+q.error.message)}
+ if(fromPage){await loadMemories();renderAll();if($('pageMemoryTitle'))$('pageMemoryTitle').value='';if($('pageMemoryNote'))$('pageMemoryNote').value='';if($('pageMemoryAlbum'))$('pageMemoryAlbum').value='';$('memoryFile').value='';prepareUploadPage();toast('kenangan berhasil disimpan.')}else{closeModal('addModal');await loadMemories();renderAll();toast('kenangan berhasil disimpan.')}
+}
 
 function startCameraClock(){clearInterval(cameraTimer);const tick=()=>{if($('cameraTime'))$('cameraTime').textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});};tick();cameraTimer=setInterval(tick,1000)}
 async function startCamera(forceSwitch=false){
