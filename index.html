@@ -725,7 +725,7 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
 <section id="loginPage" class="login-page">
   <div class="login-card">
     <div class="login-brand"><div class="login-logo">♡</div><div><div class="login-brand-name">OurMemory</div><div class="login-brand-sub">MEMORIES • STORIES • FOREVER</div></div></div>
-    <h1 id="authTitle">masuk.</h1><p class="login-sub">satu ruang pribadi untuk menyimpan foto, video, cerita kecil, dan momen yang ingin lu ingat selamanya.</p>
+    <h1 id="authTitle">masuk.</h1><p class="login-sub">satu ruang pribadi untuk menyimpan foto, video, cerita kecil, dan momen.</p>
     <div class="auth-tabs"><button id="loginTab" class="on" type="button" onclick="mode('login')">MASUK</button><button id="registerTab" type="button" onclick="mode('register')">DAFTAR</button></div>
     <form id="authForm">
       <div id="usernameField" class="field hidden"><label>USERNAME</label><input id="username" type="text" autocomplete="username" placeholder="buat username Anda"></div>
@@ -742,15 +742,15 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
   <div class="splash-paper">
     <div class="splash-symbol">♡</div>
     <div class="splash-kicker">A PRIVATE PLACE FOR</div>
-    <div class="splash-title">our little<br><em>memories.</em></div>
+    <div class="splash-title">Savista<br><em>Iyam</em></div>
     <div class="splash-line"></div>
     <div class="splash-sub">foto · video · cerita · waktu</div>
-    <div class="splash-page">page 01</div>
+    <div class="splash-page">Savista <3 Iyam</div>
   </div>
 </div>
 
 <div id="app" class="app hidden">
-  <aside class="sidebar"><div class="brand"><b>♡</b> Our Little Forever</div><nav class="side-nav">
+  <aside class="sidebar"><div class="brand"><b>♡</b> Arsip Album Berdua</div><nav class="side-nav">
     <button data-page="home" class="on" onclick="page('home')"><i>⌂</i> Beranda</button>
     <button data-page="profile" onclick="page('profile')"><i>▧</i> Galeri</button>
     <button data-page="upload" onclick="page('upload')"><i>＋</i> Upload</button>
@@ -763,13 +763,13 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
     <section id="page-home">
       <div class="romantic-cover">
         <div class="hero-copy">
-          <div class="eyebrow">OUR LITTLE FOREVER ♡</div>
-          <h1>Our Little <em>Forever</em></h1>
+          <div class="eyebrow">ARSIP ALBUM BERDUA ♡</div>
+          <h1>Savista <em>Iyam</em></h1>
           <p>bukan sekadar foto dan video,<br>tapi semua tentang kita. ♡</p>
           <div class="days-card"><div class="calendar-icon">♡</div><div><strong id="togetherDays">—</strong><span>sudah bersama</span></div><b class="days-heart">♥</b></div>
           <div style="margin-top:20px"><button class="hero-upload" onclick="page('profile')">lihat galeri <span>→</span></button></div>
         </div>
-        <div class="hero-signature">Kamu ♡ Aku = Selamanya</div>
+        <div class="hero-signature">Savista ♡ Iyam </div>
       </div>
       <div class="home-lower-grid"><div><div class="section-head"><h2>kenangan terbaru</h2><button class="link-btn" onclick="page('profile')">lihat semua →</button></div><div id="homeRecentGrid" class="home-recent-grid"></div></div><div class="home-note-card"><span>DEAR US,</span><p>setiap momen kecil yang kita simpan hari ini akan jadi cerita yang ingin kita buka lagi nanti.</p></div></div>
     </section>
@@ -777,7 +777,7 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
     <section id="page-upload" class="hidden">
       <div class="upload-page-wrap">
         <div class="upload-page-main">
-          <div class="section-intro upload-intro"><div class="eyebrow">OUR LITTLE FOREVER ♡</div><h1>Upload Foto / Video</h1><p>simpan momen indah kalian ke dalam album.</p></div>
+          <div class="section-intro upload-intro"><div class="eyebrow">Arsip Album Berdua ♡</div><h1>Upload Foto / Video</h1><p>simpan momen indah kalian ke dalam album.</p></div>
           <div class="upload-page-grid">
             <div class="upload-page-form">
               <div class="upload-drop-zone upload-page-drop" onclick="$('memoryFile').click()"><div class="upload-cloud">♧</div><b>Pilih file atau drag & drop di sini</b><span>Foto, JPG, PNG, HEIC, MP4, MOV · maksimal 100 MB</span></div>
@@ -807,7 +807,7 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
       <div class="journey"><div class="journey-copy"><div class="label">OUR STORY</div><h1>perjalanan <em>kita.</em></h1><p>hal hal kecil yang jadi bagian dari cerita kita. setiap tanggal adalah pengingat bahwa cerita ini terus berjalan.</p><div class="date-settings"><div class="date-row"><div><label>AWAL PERTEMUAN</label><input id="meetDate" type="date"></div><div><label>AWAL JADIAN</label><input id="relationDate" type="date"></div></div><button class="primary" style="width:100%;margin-top:12px" onclick="saveJourneyDates()">simpan tanggal perjalanan</button></div></div><div class="timeline"><div class="timeline-item"><span>AWAL PERTEMUAN</span><b id="meetDateLabel">belum diatur</b></div><div class="timeline-item"><span>JADIAN</span><b id="relationDateLabel">belum diatur</b><small id="journeyDaysLabel" class="muted"></small></div></div></div>
     </section>
 
-    <section id="page-settings" class="hidden"><div class="settings-wrap"><span class="settings-kicker">OUR LITTLE FOREVER</span><h1>pengaturan.</h1><p>atur akun yang sedang digunakan dan keamanan aksesnya.</p><div class="settings-profile-card"><div id="settingsAvatar" class="settings-avatar">♡</div><div><b id="settingsUsername">username</b><span id="settingsEmail">email</span></div></div><div class="settings-card">
+    <section id="page-settings" class="hidden"><div class="settings-wrap"><span class="settings-kicker">Arsip Album Berdua</span><h1>pengaturan.</h1><p>atur akun yang sedang digunakan dan keamanan aksesnya.</p><div class="settings-profile-card"><div id="settingsAvatar" class="settings-avatar">♡</div><div><b id="settingsUsername">username</b><span id="settingsEmail">email</span></div></div><div class="settings-card">
       <button class="settings-row settings-click" onclick="openEditUsername()"><div class="settings-left"><div class="settings-icon">✎</div><div><b>Ubah username</b><span>ganti nama akun yang tampil di OurMemory.</span></div></div><strong>›</strong></button>
       <button class="settings-row settings-click" onclick="openChangePassword()"><div class="settings-left"><div class="settings-icon">⌁</div><div><b>Ubah password</b><span>perbarui password akun kapan saja.</span></div></div><strong>›</strong></button>
       <button class="settings-row settings-click" onclick="switchAccount()"><div class="settings-left"><div class="settings-icon">⇄</div><div><b>Ganti akun</b><span>masuk dengan akun lain tanpa menghapus akun ini.</span></div></div><strong>›</strong></button>
