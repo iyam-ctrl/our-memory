@@ -708,6 +708,18 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
 @media(min-width:851px){.memory-lightbox{max-height:86vh}.memory-spread-view-media{min-height:600px}.memory-spread-view-copy{padding:30px 27px!important}}
 @media(max-width:850px){.login-card{padding:27px 20px 23px!important}.login-card h1{font-size:32px!important}.memory-lightbox{width:calc(100vw - 16px)!important;border-radius:16px!important}.memory-spread-view{display:block!important}.memory-spread-view-media{min-height:300px!important}.memory-spread-view-copy{padding:20px!important}.view-quote{font-size:22px!important}}
 </style>
+
+<style id="requested-timeline-detail-media-fix">
+/* only requested functionality: timeline moved to settings + detail media viewer */
+#page-journey .journey{margin-top:30px}
+.detail-media-page{max-width:1180px;margin:0 auto;padding:28px 0 30px}
+.detail-media-head{margin-bottom:18px}.detail-media-head h1{font:500 clamp(34px,5vw,56px) Georgia,serif;margin:8px 0}.detail-media-head p{color:var(--target-muted);max-width:650px}
+.detail-media-viewer{min-height:520px}.detail-media-stage{position:relative;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);min-height:520px;border:1px solid rgba(255,255,255,.12);background:#121116;overflow:hidden;border-radius:4px;box-shadow:0 28px 80px rgba(0,0,0,.4)}
+.detail-media-stage>img,.detail-media-stage>video{width:100%;height:520px;object-fit:contain;background:#090a0d;display:block}.detail-media-info{padding:38px 30px;background:linear-gradient(180deg,#f8efdf,#eadbc5);color:#3a302d;display:flex;flex-direction:column;justify-content:center}.detail-media-info .detail-type{font:900 8px Inter,sans-serif;letter-spacing:2.5px;color:#9a6b72}.detail-media-info h2{font:500 28px Georgia,serif;margin:8px 0}.detail-media-info span{font:800 9px Inter,sans-serif;letter-spacing:1.4px;color:#7e685e}.detail-media-info p{font:15px/1.9 Georgia,serif;color:#4e403c;margin-top:18px}.detail-close{position:absolute;right:16px;top:14px;z-index:5;width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:rgba(8,9,12,.75);color:#fff;font-size:26px;line-height:1}.detail-media-thumbs,.view-thumb-strip{display:flex;gap:8px;overflow-x:auto;padding:12px 2px 4px;scrollbar-width:none}.detail-media-thumbs::-webkit-scrollbar,.view-thumb-strip::-webkit-scrollbar{display:none}.detail-thumb,.view-thumb{position:relative;flex:0 0 78px;width:78px;height:62px;border:1px solid rgba(255,255,255,.14);background:#15161b;padding:0;overflow:hidden;border-radius:3px}.detail-thumb.on,.view-thumb.on{border:2px solid var(--target-pink)}.detail-thumb img,.detail-thumb video,.view-thumb img,.view-thumb video{width:100%;height:100%;object-fit:cover;display:block}.detail-thumb i,.view-thumb span{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-style:normal;font-size:18px;text-shadow:0 2px 8px #000;background:rgba(0,0,0,.12)}.detail-empty{min-height:300px;display:grid;place-items:center;border:1px dashed rgba(255,255,255,.15);color:var(--target-muted)}
+#viewModal .memory-lightbox{position:relative}.view-thumb-strip{padding:10px 18px;background:#171317;border-top:1px solid rgba(255,255,255,.08)}
+@media(max-width:850px){.detail-media-page{padding:24px 0}.detail-media-head{padding:0 4px}.detail-media-stage{grid-template-columns:1fr;min-height:0}.detail-media-stage>img,.detail-media-stage>video{height:56vh;min-height:320px}.detail-media-info{padding:22px 20px;min-height:210px}.detail-media-info h2{font-size:24px}.detail-thumb,.view-thumb{flex-basis:64px;width:64px;height:54px}.detail-media-thumbs{padding-left:2px;padding-right:2px}.view-thumb-strip{padding:8px 12px}.memory-spread-view-media{height:auto!important;min-height:0!important}.memory-spread-view-media img,.memory-spread-view-media video{max-height:58vh!important}.lightbox-top{padding-right:58px}}
+@media(max-width:430px){.mobile-nav button{width:45px!important;padding:2px 3px!important}.mobile-nav button small{font-size:6px!important;letter-spacing:1px!important}.mobile-nav .mobile-add{width:48px!important;height:48px!important}.detail-media-stage>img,.detail-media-stage>video{height:48vh;min-height:280px}}
+</style>
 </head>
 <body>
 <section id="loginPage" class="login-page">
@@ -746,7 +758,7 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
     <button data-page="settings" onclick="page('settings')"><i>⚙</i> Pengaturan</button>
   </nav><div class="profile-mini"><div id="sideAvatar" class="avatar">♡</div><div><b id="sideName">username</b><span id="sideEmail">akun</span></div></div></aside>
   <main>
-    <header class="topbar"><div class="top-brand"><span class="top-heart">♡</span><span>Our Little Forever</span></div><nav class="desktop-top-nav"><button data-page="home" class="on" onclick="page('home')">Beranda</button><button data-page="profile" onclick="page('profile')">Galeri</button><button data-page="upload" onclick="page('upload')">Upload</button><button data-page="saved" onclick="page('saved')">Memories</button></nav><div class="top-actions"><button id="installAppBtn" class="memory-upload-top hidden" onclick="installOurMemory()">＋ pasang aplikasi</button><button class="icon-btn mobile-menu-btn" title="menu" onclick="page('settings')">☰</button></div></header>
+    <header class="topbar"><div class="top-brand"><span class="top-heart">♡</span><span>Our Little Forever</span></div><nav class="desktop-top-nav"><button data-page="home" class="on" onclick="page('home')">Beranda</button><button data-page="profile" onclick="page('profile')">Galeri</button><button data-page="upload" onclick="page('upload')">Upload</button><button data-page="saved" onclick="page('saved')">Memories</button><button data-page="detail" onclick="page('detail')">Detail Media</button></nav><div class="top-actions"><button id="installAppBtn" class="memory-upload-top hidden" onclick="installOurMemory()">＋ pasang aplikasi</button><button class="icon-btn mobile-menu-btn" title="menu" onclick="page('settings')">☰</button></div></header>
 
     <section id="page-home">
       <div class="romantic-cover">
@@ -754,7 +766,7 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
           <div class="eyebrow">OUR LITTLE FOREVER ♡</div>
           <h1>Our Little <em>Forever</em></h1>
           <p>bukan sekadar foto dan video,<br>tapi semua tentang kita. ♡</p>
-          <div class="days-card"><div class="calendar-icon">♡</div><div><strong id="togetherDays">—</strong><span>sudah bersama</span></div><b class="days-heart">♥</b></div><div class="home-timeline"><div class="home-timeline-head"><span>OUR TIMELINE</span><button type="button" onclick="page('journey')">atur timeline</button></div><div class="home-timeline-items"><div><i>♡</i><span>AWAL PERTEMUAN</span><b id="homeMeetDate">BELUM DIATUR</b></div><div><i>♥</i><span>TANGGAL JADIAN</span><b id="homeRelationDate">BELUM DIATUR</b></div></div></div>
+          <div class="days-card"><div class="calendar-icon">♡</div><div><strong id="togetherDays">—</strong><span>sudah bersama</span></div><b class="days-heart">♥</b></div>
           <div style="margin-top:20px"><button class="hero-upload" onclick="page('profile')">lihat galeri <span>→</span></button></div>
         </div>
         <div class="hero-signature">Kamu ♡ Aku = Selamanya</div>
@@ -799,6 +811,7 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
       <button class="settings-row settings-click" onclick="openEditUsername()"><div class="settings-left"><div class="settings-icon">✎</div><div><b>Ubah username</b><span>ganti nama akun yang tampil di OurMemory.</span></div></div><strong>›</strong></button>
       <button class="settings-row settings-click" onclick="openChangePassword()"><div class="settings-left"><div class="settings-icon">⌁</div><div><b>Ubah password</b><span>perbarui password akun kapan saja.</span></div></div><strong>›</strong></button>
       <button class="settings-row settings-click" onclick="switchAccount()"><div class="settings-left"><div class="settings-icon">⇄</div><div><b>Ganti akun</b><span>masuk dengan akun lain tanpa menghapus akun ini.</span></div></div><strong>›</strong></button>
+      <button class="settings-row settings-click" onclick="page('journey')"><div class="settings-left"><div class="settings-icon">♡</div><div><b>Timeline</b><span>atur awal pertemuan dan tanggal jadian.</span></div></div><strong>›</strong></button>
       <button class="settings-row settings-click logout-row" onclick="logout()"><div class="settings-left"><div class="settings-icon">↪</div><div><b>Logout / Keluar</b><span>akhiri sesi OurMemory pada perangkat ini.</span></div></div><strong>›</strong></button>
     </div></div></section>
 
@@ -808,8 +821,16 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
         <div id="savedGrid" class="memories-layout target-memories-grid"></div>
       </div>
     </section>
+
+    <section id="page-detail" class="hidden">
+      <div class="detail-media-page">
+        <div class="detail-media-head"><div><div class="eyebrow">OUR ALBUM ♡</div><h1>Detail Media</h1><p>lihat satu foto atau video, lalu pilih momen lain tanpa keluar dari halaman ini.</p></div></div>
+        <div id="detailMediaViewer" class="detail-media-viewer"></div>
+        <div id="detailMediaThumbs" class="detail-media-thumbs"></div>
+      </div>
+    </section>
   </main>
-  <nav class="mobile-nav"><button data-mobile="home" class="on" onclick="page('home')"><span>⌂</span><small>Beranda</small></button><button data-mobile="profile" onclick="page('profile')"><span>▧</span><small>Galeri</small></button><button class="mobile-add" onclick="page('upload')">＋</button><button data-mobile="saved" onclick="page('saved')"><span>♡</span><small>Memories</small></button><button data-mobile="settings" onclick="page('settings')"><span>⚙</span><small>Pengaturan</small></button></nav>
+  <nav class="mobile-nav"><button data-mobile="home" class="on" onclick="page('home')"><span>⌂</span><small>Beranda</small></button><button data-mobile="profile" onclick="page('profile')"><span>▧</span><small>Galeri</small></button><button class="mobile-add" onclick="page('upload')">＋</button><button data-mobile="saved" onclick="page('saved')"><span>♡</span><small>Memories</small></button><button data-mobile="detail" onclick="page('detail')"><span>▣</span><small>Detail</small></button><button data-mobile="settings" onclick="page('settings')"><span>⚙</span><small>Pengaturan</small></button></nav>
 </div>
 
 <!-- add post -->
@@ -817,7 +838,7 @@ html,body{background:#08090d!important}body{font-family:'DM Sans',system-ui,sans
 <!-- camera -->
 <div id="momentModal" class="modal hidden"><div class="modal-box camera-modal-box"><div class="modal-head"><div><h3>ambil momen</h3><p>foto dari kamera akan dikirim sebagai momen dan muncul di Story.</p></div><button class="close" onclick="closeMoment()">×</button></div><div class="camera-wrap"><video id="momentCamera" class="camera-video" autoplay playsinline muted></video><canvas id="momentCanvas" class="hidden"></canvas><div id="cameraStatus" class="camera-status">menyiapkan kamera...</div><div class="camera-overlay"><span>OurMemory • Momen</span><span id="cameraTime"></span></div></div><div id="capturedWrap" class="captured-wrap hidden"><img id="capturedPreview" class="captured-preview" alt="preview momen"><button class="retake-btn" onclick="retakeMoment()">↻ ambil ulang</button></div><div class="camera-actions"><button class="camera-side-btn" onclick="switchCamera()">↔</button><button id="captureBtn" class="shutter" onclick="captureMoment()"><span></span></button><button class="camera-side-btn" onclick="closeMoment()">×</button></div><div class="field"><label>KETERANGAN SINGKAT</label><textarea id="momentCaption" maxlength="220" placeholder="tulis keterangan singkat untuk momen ini..."></textarea></div><button id="sendMomentBtn" class="primary" onclick="uploadMoment()" disabled>Kirim momen</button></div></div>
 <!-- view post -->
-<div id="viewModal" class="modal hidden"><div class="memory-lightbox"><div class="lightbox-top"><div><div class="lightbox-kicker">OUR MEMORY · DIARY PAGE</div><h3 id="viewTitle">KENANGAN</h3><p id="viewOwner"></p></div><button class="close" onclick="closeModal('viewModal')">×</button></div><div class="memory-spread-view"><div id="viewMedia" class="memory-spread-view-media"></div><div class="memory-spread-view-copy"><div class="view-side-kicker">DEAR US,</div><div id="viewQuote" class="view-quote"></div><div id="viewMeta" class="detail-meta"></div><div id="viewNote" class="detail-note"></div><div id="viewActions" class="modal-actions"></div></div></div></div></div>
+<div id="viewModal" class="modal hidden"><div class="memory-lightbox"><div class="lightbox-top"><div><div class="lightbox-kicker">OUR MEMORY · DIARY PAGE</div><h3 id="viewTitle">KENANGAN</h3><p id="viewOwner"></p></div><button class="close" onclick="closeModal('viewModal')">×</button></div><div class="memory-spread-view"><div id="viewMedia" class="memory-spread-view-media"></div><div id="viewThumbs" class="view-thumb-strip"></div><div class="memory-spread-view-copy"><div class="view-side-kicker">DEAR US,</div><div id="viewQuote" class="view-quote"></div><div id="viewMeta" class="detail-meta"></div><div id="viewNote" class="detail-note"></div><div id="viewActions" class="modal-actions"></div></div></div></div></div>
 <!-- comments -->
 <div id="commentsModal" class="modal hidden"><div class="modal-box"><div class="modal-head"><div><h3>komentar</h3><p id="commentPostTitle"></p></div><button class="close" onclick="closeModal('commentsModal')">×</button></div><div id="commentList" class="comment-list"></div><div class="comment-form"><input id="commentInput" placeholder="tulis komentar..." maxlength="300"><button onclick="sendComment()">Kirim</button></div></div></div>
 <!-- moment view -->
@@ -910,23 +931,48 @@ function updateTogetherDays(){const d=getJourneyDates();if($('togetherDays'))$('
 async function startJourneyRealtime(){if(!sb)return;if(window.journeyChannel)await sb.removeChannel(window.journeyChannel);window.journeyChannel=sb.channel('ourmemory-journey-live').on('postgres_changes',{event:'*',schema:'public',table:'journey_settings'},async()=>{await loadJourneyDates();renderJourney();updateTogetherDays()}).subscribe()}
 function renderAll(){applyProfile();renderProfileGrid();renderFavorit();renderJourney();updateTogetherDays()}
 function viewMemory(id){
- const x=memories.find(y=>y.id===id); if(!x)return;
+ const x=memories.find(y=>String(y.id)===String(id)); if(!x)return;
  activeMemory=x;
  const media=x.type==='video'
-  ? `<video class="preview" controls playsinline preload="auto" src="${esc(x.media_url)}"></video>`
-  : `<img class="preview" src="${esc(x.media_url)}" alt="${esc(x.title||'kenangan')}">`;
+  ? `<video class="preview" controls playsinline preload="auto" src="${esc(x.media_url)}" onerror="this.closest('.memory-spread-view-media')?.classList.add('media-load-error')"></video>`
+  : `<img class="preview" src="${esc(x.media_url)}" alt="${esc(x.title||'kenangan')}" onerror="this.closest('.memory-spread-view-media')?.classList.add('media-load-error')">`;
  const quote=x.note||'SETIAP MOMEN PUNYA CERITA SENDIRI.';
  const actions=x.user_id===user?.id
   ? `<button class="soft-btn" onclick="editMemory()">EDIT</button><button class="soft-btn" onclick="toggleFavorite('${x.id}')">${x.fav?'HAPUS FAVORIT':'TAMBAH FAVORIT'}</button><button class="danger" onclick="deleteMemory()">HAPUS</button>`
   : '';
  $('viewTitle').textContent=x.title||'KENANGAN';
  $('viewOwner').textContent=ownerName(x.user_id);
- $('viewMedia').innerHTML=`<div class="view-layout memory-open-layout"><div class="media-frame">${media}<span class="open-media-hint">× KLIK TUTUP</span></div><div class="view-side"><div class="view-side-kicker">DEAR US,</div><div class="view-quote">${esc(quote)}</div><div class="view-date">${esc(dateFmt(x.date))}</div><div class="view-note">${esc(x.note||'setiap momen punya cerita sendiri.')}</div><div class="detail-meta">ALBUM · ${esc(x.album||'UMUM')} · ${x.type==='video'?'VIDEO':'FOTO'}</div><div class="view-nav">${actions}<button class="soft-btn" onclick="downloadMemory()">DOWNLOAD</button></div></div></div>`;
- $('viewMeta').textContent=''; $('viewNote').textContent='';
+ $('viewMedia').innerHTML=media;
+ $('viewQuote').innerHTML=esc(quote);
+ $('viewMeta').innerHTML=`ALBUM · ${esc(x.album||'UMUM')} · ${x.type==='video'?'VIDEO':'FOTO'} · ${esc(dateFmt(x.date))}`;
+ $('viewNote').textContent=x.note||'';
+ $('viewActions').innerHTML=`${actions}<button class="soft-btn" onclick="downloadMemory()">DOWNLOAD</button>`;
+ renderViewThumbs(x.id);
  $('viewModal').classList.remove('hidden');
- const frame=document.querySelector('#viewModal .media-frame');
- frame?.addEventListener('click',e=>{if(e.target===frame)closeModal('viewModal')},{once:true});
+ const video=$('#viewModal video');
+ if(video){video.load();}
 }
+function renderViewThumbs(selectedId){
+ const g=$('viewThumbs');if(!g)return;
+ const list=memories||[];
+ g.innerHTML=list.map(x=>`<button type="button" class="view-thumb ${String(x.id)===String(selectedId)?'on':''}" onclick="selectViewMemory('${x.id}')">${x.type==='video'?`<video src="${esc(x.media_url)}" muted playsinline preload="metadata"></video><span>▶</span>`:`<img src="${esc(x.media_url)}" loading="lazy" decoding="async" alt="">`}</button>`).join('');
+ setTimeout(()=>{g.querySelectorAll('video').forEach(v=>{v.muted=true;v.playsInline=true;v.preload='metadata';v.addEventListener('loadedmetadata',()=>{try{v.currentTime=.01}catch(e){}},{once:true})})},20);
+}
+function selectViewMemory(id){
+ const x=memories.find(y=>String(y.id)===String(id));if(!x)return;
+ viewMemory(x.id);
+}
+function renderDetailMedia(){
+ const viewer=$('detailMediaViewer'),thumbs=$('detailMediaThumbs');if(!viewer||!thumbs)return;
+ if(!memories.length){viewer.innerHTML='<div class="detail-empty">belum ada foto atau video yang tersimpan.</div>';thumbs.innerHTML='';return}
+ const x=activeMemory&&memories.some(y=>String(y.id)===String(activeMemory.id))?memories.find(y=>String(y.id)===String(activeMemory.id)):memories[0];
+ activeMemory=x;
+ const media=x.type==='video'?`<video controls playsinline preload="auto" src="${esc(x.media_url)}"></video>`:`<img src="${esc(x.media_url)}" loading="eager" fetchpriority="high" decoding="async" alt="${esc(x.title||'kenangan')}">`;
+ viewer.innerHTML=`<div class="detail-media-stage"><button class="detail-close" type="button" onclick="page('profile')" aria-label="Tutup">×</button>${media}<div class="detail-media-info"><div class="detail-type">${x.type==='video'?'VIDEO':'FOTO'}</div><h2>${esc(x.title||'Kenangan')}</h2><span>${esc(dateFmt(x.date))}</span><p>${esc(x.note||'')}</p></div></div>`;
+ thumbs.innerHTML=memories.map(m=>`<button type="button" class="detail-thumb ${String(m.id)===String(x.id)?'on':''}" onclick="selectDetailMemory('${m.id}')">${m.type==='video'?`<video src="${esc(m.media_url)}" muted playsinline preload="metadata"></video><i>▶</i>`:`<img src="${esc(m.media_url)}" loading="lazy" decoding="async" alt="">`}</button>`).join('');
+ setTimeout(()=>{thumbs.querySelectorAll('video').forEach(v=>{v.muted=true;v.playsInline=true;v.preload='metadata';v.addEventListener('loadedmetadata',()=>{try{v.currentTime=.01}catch(e){}},{once:true})})},20);
+}
+function selectDetailMemory(id){const x=memories.find(y=>String(y.id)===String(id));if(!x)return;activeMemory=x;renderDetailMedia()}
 
 function editMemory(){
  if(!activeMemory||activeMemory.user_id!==user?.id)return toast('ANDA HANYA DAPAT MENGUBAH KENANGAN MILIK ANDA.');
@@ -948,7 +994,7 @@ async function uploadMemory(fromPage=false){const f=$('memoryFile')?.files?.[0];
 
 async function startMemoryRealtime(){if(!sb)return;if(window.memoryChannel)await sb.removeChannel(window.memoryChannel);window.memoryChannel=sb.channel('ourmemory-memory-live').on('postgres_changes',{event:'*',schema:'public',table:'memories'},async()=>{await loadMemories();renderAll()}).subscribe()}
 
-async function page(p){const pages=['home','search','moments','profile','upload','settings','saved','journey'];const layer=$('pageTransitionLayer');layer?.classList.remove('on');pages.forEach(x=>$('page-'+x)?.classList.toggle('hidden',x!==p));document.querySelectorAll('.side-nav button').forEach(b=>b.classList.toggle('on',b.dataset.page===p));document.querySelectorAll('.desktop-top-nav button').forEach(b=>b.classList.toggle('on',b.dataset.page===p));document.querySelectorAll('.mobile-nav button[data-mobile]').forEach(b=>b.classList.toggle('on',b.dataset.mobile===p));const active=$('page-'+p);if(active){active.classList.remove('page-animated');void active.offsetWidth;active.classList.add('page-animated')}if(p==='upload')prepareUploadPage();if(p==='profile'){galleryFilter='all';document.querySelectorAll('#page-profile .filter-bar button').forEach((b,i)=>b.classList.toggle('on',i===0));if($('gallerySearch'))$('gallerySearch').value='';filterGallerySearch()}if(p==='saved')renderFavorit();if(p==='journey'){renderJourney();updateTogetherDays()}if(p==='home')updateTogetherDays();window.scrollTo({top:0,behavior:'smooth'});if(user){renderAll();Promise.allSettled([loadMemories(),p==='journey'?loadJourneyDates():Promise.resolve()]).then(()=>{renderAll();if(p==='saved')renderFavorit()})}}
+async function page(p){const pages=['home','search','moments','profile','upload','settings','saved','journey','detail'];const layer=$('pageTransitionLayer');layer?.classList.remove('on');pages.forEach(x=>$('page-'+x)?.classList.toggle('hidden',x!==p));document.querySelectorAll('.side-nav button').forEach(b=>b.classList.toggle('on',b.dataset.page===p));document.querySelectorAll('.desktop-top-nav button').forEach(b=>b.classList.toggle('on',b.dataset.page===p));document.querySelectorAll('.mobile-nav button[data-mobile]').forEach(b=>b.classList.toggle('on',b.dataset.mobile===p));const active=$('page-'+p);if(active){active.classList.remove('page-animated');void active.offsetWidth;active.classList.add('page-animated')}if(p==='upload')prepareUploadPage();if(p==='profile'){galleryFilter='all';document.querySelectorAll('#page-profile .filter-bar button').forEach((b,i)=>b.classList.toggle('on',i===0));if($('gallerySearch'))$('gallerySearch').value='';filterGallerySearch()}if(p==='saved')renderFavorit();if(p==='journey'){renderJourney();updateTogetherDays()}if(p==='detail'){renderDetailMedia()}if(p==='home')updateTogetherDays();window.scrollTo({top:0,behavior:'smooth'});if(user){renderAll();Promise.allSettled([loadMemories(),p==='journey'?loadJourneyDates():Promise.resolve()]).then(()=>{renderAll();if(p==='saved')renderFavorit()})}}
 
 function startCameraClock(){clearInterval(cameraTimer);const tick=()=>{if($('cameraTime'))$('cameraTime').textContent=new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});};tick();cameraTimer=setInterval(tick,1000)}
 async function startCamera(forceSwitch=false){
